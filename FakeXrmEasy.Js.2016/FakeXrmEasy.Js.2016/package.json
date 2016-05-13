@@ -5,7 +5,8 @@
   "main": "app.js",
   "author": "Jordi",
   "dependencies": {
-    "edge": "^5.0.0"
+    "edge": "^5.0.0",
+    "sinon": "^1.17.4"
   },
   "devDependencies": {},
   "scripts": {

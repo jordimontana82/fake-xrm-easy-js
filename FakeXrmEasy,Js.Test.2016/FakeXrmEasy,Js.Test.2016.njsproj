@@ -3,16 +3,16 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <Name>FakeXrmEasy.Js.2016</Name>
-    <RootNamespace>FakeXrmEasy.Js.2016</RootNamespace>
+    <Name>FakeXrmEasy,Js.Test.2016</Name>
+    <RootNamespace>FakeXrmEasy,Js.Test.2016</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>de96ab1d-01e4-47d5-8a92-f091b9130c75</ProjectGuid>
+    <ProjectGuid>858953b5-c2d3-4048-8577-2a722ce6e9e9</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>index.js</StartupFile>
+    <StartupFile>test.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -30,9 +30,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="index.js" />
+    <Compile Include="test.js">
+      <TestFramework>Mocha</TestFramework>
+    </Compile>
     <Content Include="package.json" />
-    <Content Include="ProxyInitialize.cs" />
     <Content Include="README.md" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
