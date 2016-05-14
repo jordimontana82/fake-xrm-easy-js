@@ -1,9 +1,10 @@
 ﻿var expect = require("chai").expect;
-var converter = require("../FakeXrmEasy.Js.2016/FakeXrmEasy.Js.2016/index.js");
+var xrmFakedContext = require("./index.js");
 
-describe("CRUD", function () {
+describe("XHR", function () {
 	describe("Create", function () {
 		it("it creates an entity in the memory context", function () {
+            var ctx = new xrmFakedContext.XrmFakedContext();
 
 			expect(true).to.equal(false);
 		});
