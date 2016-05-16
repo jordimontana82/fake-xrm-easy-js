@@ -26,6 +26,17 @@ var odataParser = require('odata-parser');
         if (fakeXhr.url.indexOf(xrm.Page.context.getClientUrl()) < 0) {
             return;
         }
+        
+        //Get relative url
+        fakeXhr.relativeApiUrl = fakeXhr.url.replace(xrm.Page.context.getClientUrl(), "");
+        
+        //Check api v8
+        if (fakeXhr.relativeApiUrl.indexOf("/api/data/v8.0/") < 0) {
+            throw 'Only Web API Requests are supported (v8.0)';
+        }
+        
+        //get url part after version
+        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/v8.0/", "");
 
         //Undo substring and parse body
         if (fakeXhr.requestHeaders["Content-Type"] &&
@@ -54,12 +65,16 @@ var odataParser = require('odata-parser');
     
     //Process query depending on method
     function processXhrPost(fakeXhr) {
+        var entityName = fakeXhr.relativeUrl;
         var jsonData = JSON.parse(fakeXhr.requestBody);
+
+        //Create a new record of the specified entity in the context
+        _data[entityName] = jsonData;
     }
     function processXhrGet(fakeXhr) {
-        if (fakeXhr.url.indexOf('?') >= 0) {
+        if (fakeXhr.relativeUrl.indexOf('?') >= 0) {
             //Query
-            var odataQuery = fakeXhr.url.split('?')[1];
+            var odataQuery = fakeXhr.relativeUrl.split('?')[1];
             var parsedUrl = odataParser.parse(odataQuery);
         }
         else {
@@ -78,6 +93,9 @@ var odataParser = require('odata-parser');
         this.responseHeaders = [];
         this.readyState = 1;
         this.status = 100;
+        
+        this.relativeApiUrl = '';
+        this.relativeUrl = '';
 
         //Push to the requests array
         _xhrRequests.push(this);
@@ -122,6 +140,7 @@ var odataParser = require('odata-parser');
    */
 
     exports.Xrm = xrm;
+    exports.data = _data;
     exports.initialize = function (entities) {
         if (!entities.length) {
             throw new "Entities must be a JS array";
