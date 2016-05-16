@@ -7,6 +7,10 @@
   "dependencies": {
     "chai": "^3.5.0",
     "edge": "^5.0.0",
+    "grunt": "^1.0.1",
+    "grunt-istanbul": "^0.7.0",
+    "grunt-mocha-test": "^0.12.7",
+    "istanbul": "^0.4.3",
     "mocha": "^2.4.5",
     "odata-parser": "^1.4.1",
     "sinon": "^1.17.4",
