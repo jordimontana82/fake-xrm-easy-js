@@ -1,0 +1,13 @@
+{
+  "name": "fake-xrm-easy.js.tests.2016",
+  "version": "0.0.0",
+  "description": "FakeXrmEasy.Js.Tests.2016",
+  "main": "app.js",
+  "author": {
+    "name": "Jordi",
+    "email": ""
+  },
+  "dependencies": {
+    "mocha": "^2.4.5"
+  }
+}

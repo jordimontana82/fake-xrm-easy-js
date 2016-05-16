@@ -2,11 +2,15 @@
   "name": "fakexrmeasy.2016",
   "version": "0.0.1",
   "description": "FakeXrmEasy.Js.2016",
-  "main": "app.js",
+  "main": "index.js",
   "author": "Jordi",
   "dependencies": {
+    "chai": "^3.5.0",
     "edge": "^5.0.0",
-    "sinon": "^1.17.4"
+    "mocha": "^2.4.5",
+    "odata-parser": "^1.4.1",
+    "sinon": "^1.17.4",
+    "xmlhttprequest": "^1.8.0"
   },
   "devDependencies": {},
   "scripts": {

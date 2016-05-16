@@ -11,6 +11,8 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FakeXrmEasy.Js.2013", "Fake
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FakeXrmEasy.Js.2015", "FakeXrmEasy.Js.2015\FakeXrmEasy.Js.2015.njsproj", "{C8FD04B7-F8F7-4D6B-A73E-8372DD50F93E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebResources", "WebResources\WebResources.csproj", "{68670149-40FE-4EA9-A624-572B2C595F69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C8FD04B7-F8F7-4D6B-A73E-8372DD50F93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8FD04B7-F8F7-4D6B-A73E-8372DD50F93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8FD04B7-F8F7-4D6B-A73E-8372DD50F93E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68670149-40FE-4EA9-A624-572B2C595F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68670149-40FE-4EA9-A624-572B2C595F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68670149-40FE-4EA9-A624-572B2C595F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68670149-40FE-4EA9-A624-572B2C595F69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
