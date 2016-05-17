@@ -1,9 +1,9 @@
 ﻿global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
-var xrmFakedContext = require('./src/xrmFakedContext.js');
+var xrmFakedContext = require('../src/xrmFakedContext.js');
 global.Xrm = xrmFakedContext.Xrm;
 
-var accountHelper = require('./webresources/createAccount.js');
+var accountHelper = require('../webresources/createAccount.js');
 var assert = require('chai').assert;
 
 
