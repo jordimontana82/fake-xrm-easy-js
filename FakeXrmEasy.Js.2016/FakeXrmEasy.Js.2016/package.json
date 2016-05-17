@@ -6,8 +6,10 @@
   "author": "Jordi",
   "dependencies": {
     "chai": "^3.5.0",
+    "dateformat": "^1.0.12",
     "edge": "^5.0.0",
     "grunt": "^1.0.1",
+    "grunt-env": "^0.4.4",
     "grunt-istanbul": "^0.7.0",
     "grunt-mocha-test": "^0.12.7",
     "istanbul": "^0.4.3",
@@ -18,7 +20,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "repository": {
     "type": "git",
