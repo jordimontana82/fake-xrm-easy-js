@@ -1,7 +1,7 @@
 ﻿var edge = require('edge');
 //var sinon = require('sinon');
 var odataParser = require('odata-parser');
-
+var guid = require('guid');
 
 
 (function (exports) {
@@ -71,7 +71,9 @@ var odataParser = require('odata-parser');
         var jsonData = JSON.parse(fakeXhr.requestBody);
 
         //Create a new record of the specified entity in the context
-        _data[entityName] = jsonData;
+        jsonData.id = Guid.create();
+
+        _data[entityName][jsonData.id] = jsonData;
     }
     function processXhrGet(fakeXhr) {
         if (fakeXhr.relativeUrl.indexOf('?') >= 0) {
@@ -143,7 +145,7 @@ var odataParser = require('odata-parser');
 
     exports.Xrm = xrm;
     exports.data = _data;
-    exports.initialize = function (entities) {
+    exports.initialize = function (entityname, entities) {
         if (!entities.length) {
             throw new "Entities must be a JS array";
         }
@@ -156,7 +158,7 @@ var odataParser = require('odata-parser');
                 throw new "Entity"+ i.toString() + " must have an id property";
             }
 
-
+            _data[entityName][e.id] = e;
         }
     };
 

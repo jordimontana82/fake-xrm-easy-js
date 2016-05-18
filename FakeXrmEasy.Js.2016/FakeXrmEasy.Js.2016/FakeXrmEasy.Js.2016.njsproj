@@ -40,8 +40,10 @@
       <SubType>Code</SubType>
       <TestFramework>Mocha</TestFramework>
     </Compile>
+    <Compile Include="tests\test_query.js" />
     <Compile Include="webresources\basic.js" />
     <Compile Include="webresources\createAccount.js" />
+    <Compile Include="webresources\queryAccounts.js" />
     <Content Include="package.json" />
     <Content Include="ProxyInitialize.cs" />
     <Content Include="README.md" />
