@@ -1,7 +1,7 @@
 ﻿var edge = require('edge');
 //var sinon = require('sinon');
 var odataParser = require('odata-parser');
-var guid = require('guid');
+var Guid = require('guid');
 
 
 (function (exports) {
@@ -22,7 +22,7 @@ var guid = require('guid');
     //XmlHttpRequest backup
     var _realXMLHttpRequest = global.XMLHttpRequest;
     var _xhrRequests = [];
-    
+
     function processXhr(fakeXhr) {
         //Only process requests which belong to the CRM URL
         if (fakeXhr.url.indexOf(xrm.Page.context.getClientUrl()) < 0) {
@@ -64,7 +64,32 @@ var guid = require('guid');
             throw 'Content-Type not supported. Fake server supports JSON requests only';
         }
     }
-    
+
+    function translateODataToQueryExpression_select(entityname, selectClause) {
+
+    }
+
+    function translateODataToQueryExpression_top(entityname, parsedQuery) {
+
+    }
+
+    function translateODataToQueryExpression_filter(entityname, parsedQuery) {
+
+    }
+
+    function translateODataToQueryExpression(entityname, parsedQuery) {
+        var qe = {};
+
+        qe.entityName = entityname;
+        if (parsedQuery['$select']) {
+            qe.columnSet = translateODataToQueryExpression_select(entityname, parsedQuery['$select']);
+        }
+        else {
+            qe.columnSet = { allColumns: true };
+        }
+        return qe;
+    }
+
     //Process query depending on method
     function processXhrPost(fakeXhr) {
         var entityName = fakeXhr.relativeUrl;
@@ -78,8 +103,11 @@ var guid = require('guid');
     function processXhrGet(fakeXhr) {
         if (fakeXhr.relativeUrl.indexOf('?') >= 0) {
             //Query
+            var entityName = fakeXhr.relativeUrl.split('?')[0];
             var odataQuery = fakeXhr.relativeUrl.split('?')[1];
-            var parsedUrl = odataParser.parse(odataQuery);
+            var parsedQuery = odataParser.parse(decodeURIComponent(odataQuery));
+
+            var qe = translateODataToQueryExpression(entityName, parsedQuery);
         }
         else {
             //Return the first x records??
@@ -158,7 +186,14 @@ var guid = require('guid');
                 throw new "Entity"+ i.toString() + " must have an id property";
             }
 
-            _data[entityName][e.id] = e;
+            if (!Guid.isGuid(e.id)) {
+                throw new "Entity" + i.toString() + " must be a valid Guid property";
+            }
+
+            if (!_data[entityname])
+                _data[entityname] = [];
+
+            _data[entityname][e.id.toString()] = e;
         }
     };
 

@@ -1,7 +1,7 @@
 ﻿
 (function (exports) {
     
-    function getAccounts(query) {
+    function getRecords(query) {
         var req = new XMLHttpRequest();
         
         var clientUrl = Xrm.Page.context.getClientUrl();
@@ -27,8 +27,8 @@
         req.send({});
     }
     
-    exports.getAccounts = getAccounts;
+    exports.get = getRecords;
 
-})(typeof exports === 'undefined' ? this['accountHelper'] = {} : exports);
+})(typeof exports === 'undefined' ? this['queryHelper'] = {} : exports);
 
 
