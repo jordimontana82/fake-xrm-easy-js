@@ -23,6 +23,18 @@ var Guid = require('guid');
     var _realXMLHttpRequest = global.XMLHttpRequest;
     var _xhrRequests = [];
 
+    var edgeReferences = [
+        '../../../packages/FakeXrmEasy.2016.1.13.7/lib/net452/FakeXrmEasy.dll',
+        '../../../EdgeProxy/bin/Debug/EdgeProxy.dll',
+
+    ];
+    var translateMethod = edge.func({
+        assemblyFile: 'EdgeProxy.dll',
+        typeName: 'EdgeProxy.Proxy',
+        methodName: 'TranslateQueryExpressionToLinq', // This must be Func<object,Task<object>>
+        references: edgeReferences
+    });
+
     function processXhr(fakeXhr) {
         //Only process requests which belong to the CRM URL
         if (fakeXhr.url.indexOf(xrm.Page.context.getClientUrl()) < 0) {
@@ -108,6 +120,10 @@ var Guid = require('guid');
             var parsedQuery = odataParser.parse(decodeURIComponent(odataQuery));
 
             var qe = translateODataToQueryExpression(entityName, parsedQuery);
+
+            translateMethod(qe, function (error, result) {
+                console.log('testing');
+            });
         }
         else {
             //Return the first x records??
