@@ -23,16 +23,16 @@ var Guid = require('guid');
     var _realXMLHttpRequest = global.XMLHttpRequest;
     var _xhrRequests = [];
 
-    var edgeReferences = [
-        '../../../packages/FakeXrmEasy.2016.1.13.7/lib/net452/FakeXrmEasy.dll',
-        '../../../EdgeProxy/bin/Debug/EdgeProxy.dll',
+    var dllProxyBasePath = '../../../EdgeProxy/bin/Debug';
+    //var edgeReferences = [
+    //    '../../../packages/FakeXrmEasy.2016.1.13.7/lib/net452/FakeXrmEasy.dll',
+    //    '../../../EdgeProxy/bin/Debug/EdgeProxy.dll'
 
-    ];
+    //];
     var translateMethod = edge.func({
-        assemblyFile: 'EdgeProxy.dll',
+        assemblyFile: dllProxyBasePath + '/EdgeProxy.dll',
         typeName: 'EdgeProxy.Proxy',
-        methodName: 'TranslateQueryExpressionToLinq', // This must be Func<object,Task<object>>
-        references: edgeReferences
+        methodName: 'TranslateODataQueryToQueryExpression' // This must be Func<object,Task<object>>
     });
 
     function processXhr(fakeXhr) {
@@ -78,7 +78,7 @@ var Guid = require('guid');
     }
 
     function translateODataToQueryExpression_select(entityname, selectClause) {
-
+        return selectClause; //Already parsed
     }
 
     function translateODataToQueryExpression_top(entityname, parsedQuery) {
@@ -92,14 +92,39 @@ var Guid = require('guid');
     function translateODataToQueryExpression(entityname, parsedQuery) {
         var qe = {};
 
-        qe.entityName = entityname;
+        qe.EntityName = entityname;
         if (parsedQuery['$select']) {
-            qe.columnSet = translateODataToQueryExpression_select(entityname, parsedQuery['$select']);
+            qe.ColumnSet = translateODataToQueryExpression_select(entityname, parsedQuery['$select']);
         }
         else {
-            qe.columnSet = { allColumns: true };
+            qe.ColumnSet = { AllColumns: true };
         }
         return qe;
+    }
+
+    function getContextForEdge() {
+        var entities = [];
+        for (var entityname in _data) {
+            for (var id in _data[entityname]) {
+                entities.push({
+                    EntityName: entityname,
+                    Entity: _data[entityname][id]
+                });
+            }
+        }
+        return entities;
+    }
+
+    function convertEntityFromDotNetToOData(entity) {
+        var jsEntity = { id: entity.Id };
+        
+        //Copy attributes
+        for (var j = 0; j < entity.Attributes.length; j++) {
+            var att = entity.Attributes[j];
+            jsEntity[att.Key] = att.Value;
+        }
+
+        return jsEntity;
     }
 
     //Process query depending on method
@@ -112,6 +137,7 @@ var Guid = require('guid');
 
         _data[entityName][jsonData.id] = jsonData;
     }
+
     function processXhrGet(fakeXhr) {
         if (fakeXhr.relativeUrl.indexOf('?') >= 0) {
             //Query
@@ -121,8 +147,39 @@ var Guid = require('guid');
 
             var qe = translateODataToQueryExpression(entityName, parsedQuery);
 
-            translateMethod(qe, function (error, result) {
-                console.log('testing');
+            //Pass the context plus the queryexpression as the parameter
+            var executionContext = {
+                QueryExpression: qe,
+                Context: getContextForEdge()
+            };
+            translateMethod(executionContext, function (error, result) {
+                if (result.Entities) {
+                    if (result.Entities.length > 0) {
+                        //Found
+
+                        //Return a list of entities
+                        var response = {};
+                        response["@odata.context"] = "";
+
+                        var entities = [];
+                        for (var i = 0; i < result.Entities.length; i++) {
+                            var entity = result.Entities[i];
+                            var odataEntity = convertEntityFromDotNetToOData(entity);
+                            odataEntity["@odata.etag"] = "W/\"" + i.toString() + "\"";
+                            entities.push(odataEntity);
+                        }
+
+                        response.value = entities;
+
+                        fakeXhr.status = 200;
+                        fakeXhr.response = JSON.stringify(response);
+                        fakeXhr.readyState = 4; //Completed
+
+                        //Force callback
+                        if (fakeXhr.onreadystatechange)
+                            fakeXhr.onreadystatechange();
+                    }
+                }
             });
         }
         else {
@@ -169,7 +226,6 @@ var Guid = require('guid');
 
     
     
-    
 
     //Replace default XHR behavior with the custom fake one
     global.XMLHttpRequest = FakeXMLHttpRequest;
@@ -203,8 +259,10 @@ var Guid = require('guid');
             }
 
             if (!Guid.isGuid(e.id)) {
-                throw new "Entity" + i.toString() + " must be a valid Guid property";
+                throw new "Entity" + i.toString() + " must have a valid id property (Guid expected)";
             }
+
+            e.id = e.id.toString();
 
             if (!_data[entityname])
                 _data[entityname] = [];
