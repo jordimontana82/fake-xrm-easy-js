@@ -139,52 +139,58 @@ var Guid = require('guid');
     }
 
     function processXhrGet(fakeXhr) {
+        //Query
+        var entityName;
+        var odataQuery;
+        var parsedQuery;
+
         if (fakeXhr.relativeUrl.indexOf('?') >= 0) {
             //Query
             var entityName = fakeXhr.relativeUrl.split('?')[0];
             var odataQuery = fakeXhr.relativeUrl.split('?')[1];
             var parsedQuery = odataParser.parse(decodeURIComponent(odataQuery));
-
-            var qe = translateODataToQueryExpression(entityName, parsedQuery);
-
-            //Pass the context plus the queryexpression as the parameter
-            var executionContext = {
-                QueryExpression: qe,
-                Context: getContextForEdge()
-            };
-            translateMethod(executionContext, function (error, result) {
-                if (result.Entities) {
-                    if (result.Entities.length > 0) {
-                        //Found
-
-                        //Return a list of entities
-                        var response = {};
-                        response["@odata.context"] = "";
-
-                        var entities = [];
-                        for (var i = 0; i < result.Entities.length; i++) {
-                            var entity = result.Entities[i];
-                            var odataEntity = convertEntityFromDotNetToOData(entity);
-                            odataEntity["@odata.etag"] = "W/\"" + i.toString() + "\"";
-                            entities.push(odataEntity);
-                        }
-
-                        response.value = entities;
-
-                        fakeXhr.status = 200;
-                        fakeXhr.response = JSON.stringify(response);
-                        fakeXhr.readyState = 4; //Completed
-
-                        //Force callback
-                        if (fakeXhr.onreadystatechange)
-                            fakeXhr.onreadystatechange();
-                    }
-                }
-            });
         }
         else {
-            //Return the first x records??
+            var entityName = fakeXhr.relativeUrl;
+            var parsedQuery = {}; //Empty query
         }
+
+        var qe = translateODataToQueryExpression(entityName, parsedQuery);
+
+        //Pass the context plus the queryexpression as the parameter
+        var executionContext = {
+            QueryExpression: qe,
+            Context: getContextForEdge()
+        };
+        translateMethod(executionContext, function (error, result) {
+            if (result.Entities) {
+                if (result.Entities.length > 0) {
+                    //Found
+
+                    //Return a list of entities
+                    var response = {};
+                    response["@odata.context"] = "";
+
+                    var entities = [];
+                    for (var i = 0; i < result.Entities.length; i++) {
+                        var entity = result.Entities[i];
+                        var odataEntity = convertEntityFromDotNetToOData(entity);
+                        odataEntity["@odata.etag"] = "W/\"" + i.toString() + "\"";
+                        entities.push(odataEntity);
+                    }
+
+                    response.value = entities;
+
+                    fakeXhr.status = 200;
+                    fakeXhr.response = JSON.stringify(response);
+                    fakeXhr.readyState = 4; //Completed
+
+                    //Force callback
+                    if (fakeXhr.onreadystatechange)
+                        fakeXhr.onreadystatechange();
+                }
+            }
+        });
     }
 
     function FakeXMLHttpRequest() {
