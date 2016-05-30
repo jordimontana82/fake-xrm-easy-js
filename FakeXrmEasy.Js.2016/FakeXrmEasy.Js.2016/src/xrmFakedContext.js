@@ -85,10 +85,6 @@ var Guid = require('guid');
 
     }
 
-    function translateODataToQueryExpression_filter(entityname, parsedQuery) {
-
-    }
-
     function translateODataToQueryExpression(entityname, parsedQuery) {
         var qe = {};
 
@@ -98,6 +94,11 @@ var Guid = require('guid');
         }
         else {
             qe.ColumnSet = { AllColumns: true };
+        }
+
+        qe.Criteria = null;
+        if (parsedQuery['$filter']) {
+            qe.Criteria = parsedQuery['$filter'];
         }
         return qe;
     }

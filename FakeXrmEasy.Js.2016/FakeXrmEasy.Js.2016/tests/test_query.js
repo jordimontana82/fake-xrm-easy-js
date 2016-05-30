@@ -53,14 +53,43 @@ describe("XHR Get", function () {
         assert.isTrue(bWasCalled);
     });
 
-    it("$filter: gt test", function () {
+    //Got these filters from https://msdn.microsoft.com/en-gb/library/gg334767.aspx
+
+    it("$filter: eq test", function () {
 
         xrmFakedContext.initialize("accounts", [
             { id: Guid.create(), name: 'Company 1', revenue: 3000 },
-            { id: Guid.create(), name: 'Company 1', revenue: 100001 }
+            { id: Guid.create(), name: 'Company 2', revenue: 100001 }
         ]);
 
-        queryHelper.get("accounts?$select=name,revenue$filter=revenue gt 100000");
+        var bWasCalled = false;
+
+        queryHelper.retrieveMultiple("accounts?$filter=revenue eq 100001", function (data) {
+            bWasCalled = true;
+
+            assert.equal(data.value.length, 1); 
+            assert.equal(data.value[0].name, "Company 2");
+            assert.equal(data.value[0].revenue, 100001);
+        });
+
+        assert.isTrue(bWasCalled);
+    });
+
+    it("$filter: eq test with no matching results", function () {
+
+        xrmFakedContext.initialize("accounts", [
+            { id: Guid.create(), name: 'Company 1', revenue: 3000 },
+            { id: Guid.create(), name: 'Company 2', revenue: 100001 }
+        ]);
+
+        var bWasCalled = false;
+
+        queryHelper.retrieveMultiple("accounts?$filter=revenue eq 100000", function (data) {
+            bWasCalled = true;
+            assert.equal(data.value.length, 0);
+        });
+
+        assert.isTrue(bWasCalled);
     });
 
     it("$top: it should retrieve the top X first results", function () {

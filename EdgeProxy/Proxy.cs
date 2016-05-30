@@ -26,8 +26,101 @@ namespace EdgeProxy
                 qe.ColumnSet = new ColumnSet(true);
             }
 
+            //Criteria
+            if(query.Criteria != null)
+            {
+                var criteria = query.Criteria as IDictionary<string, object>;
+                qe.Criteria = ConvertFilterExpressionFromDynamic(criteria);
+            }
 
             return qe;
+        }
+
+
+
+        protected bool IsBooleanOperator(string type)
+        {
+            return type == "and" || type == "or";
+        }
+
+        protected bool IsRelationalOperator(string type)
+        {
+            return !IsBooleanOperator(type) && !IsLiteral(type);
+        }
+
+        protected bool IsLiteral(string type)
+        {
+            return type == "literal";
+        }
+
+        protected ConditionExpression ConvertRelationalExpressionFromDynamic(dynamic condition)
+        {
+            var type = condition.type as string;
+
+            var isProperty = (condition.left.type as string).Equals("property");
+            if(!isProperty)
+            {
+                throw new Exception("Condition expression must have a property in the left hand side of the expression");
+            }
+            var isLiteral = (condition.right.type as string).Equals("literal");
+            if (!isLiteral)
+            {
+                throw new Exception("Condition expression must have a literal in the right hand side of the expression");
+            }
+
+            switch (type)
+            {
+                case "eq":
+                    //Equals
+                    return new ConditionExpression(condition.left.name as string, ConditionOperator.Equal, condition.right.value as object);
+
+                default:
+
+                    throw new Exception(string.Format("{0} operator not yet supported", type));
+            }
+        }
+
+        protected FilterExpression ConvertFilterExpressionFromDynamic(dynamic filter)
+        {
+            var type = filter.type as string;
+
+            if(IsRelationalOperator(type))
+            {
+                //Filter with a single condition expression
+                var condition = ConvertRelationalExpressionFromDynamic(filter);
+                var f = new FilterExpression(LogicalOperator.And);
+                f.Conditions.Add(condition);
+                return f;
+            }
+
+            else if(IsBooleanOperator(type))
+            {
+                //Process child filters recursively
+                var left = ConvertFilterExpressionFromDynamic(filter.left);
+                var right = ConvertFilterExpressionFromDynamic(filter.right);
+
+                var filterExp = new FilterExpression();
+                switch (type)
+                {
+                    case "or":
+                        filterExp.FilterOperator = LogicalOperator.Or;
+                        break;
+                    case "and":
+                    default:
+                        filterExp.FilterOperator = LogicalOperator.And;
+                        break;
+                }
+
+                filterExp.Filters.Add(left);
+                filterExp.Filters.Add(right);
+
+                return filterExp;
+            }
+
+            else
+            {
+                throw new Exception("Invalid criteria: it must be either a condition or a filterexpression.");
+            }
         }
 
         protected Entity ConvertEntityFromDynamic(dynamic entityWrapper)
