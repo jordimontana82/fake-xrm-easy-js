@@ -40,7 +40,7 @@ namespace EdgeProxy
 
         protected bool IsBooleanOperator(string type)
         {
-            return type == "and" || type == "or";
+            return type == "and" || type == "or" || type == "not";
         }
 
         protected bool IsRelationalOperator(string type)
@@ -68,15 +68,77 @@ namespace EdgeProxy
                 throw new Exception("Condition expression must have a literal in the right hand side of the expression");
             }
 
+            var newCondition = new ConditionExpression(condition.left.name as string, ConditionOperator.Equal, condition.right.value as object);
             switch (type)
             {
                 case "eq":
                     //Equals
-                    return new ConditionExpression(condition.left.name as string, ConditionOperator.Equal, condition.right.value as object);
+                    newCondition.Operator = ConditionOperator.Equal;
+                    return newCondition;
+
+                case "ne":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.NotEqual;
+                    return newCondition;
 
                 default:
 
                     throw new Exception(string.Format("{0} operator not yet supported", type));
+            }
+        }
+
+        protected ConditionExpression NegateCondition(ConditionExpression condition)
+        {
+            var newCondition = new ConditionExpression(condition.AttributeName, condition.Operator, condition.Values);
+
+            switch(condition.Operator)
+            {
+                case ConditionOperator.Equal:
+                    newCondition.Operator = ConditionOperator.NotEqual;
+                    break;
+                case ConditionOperator.NotEqual:
+                    newCondition.Operator = ConditionOperator.Equal;
+                    break;
+
+                default:
+                    throw new Exception(string.Format("Negate condition for operator {0} not yet supported.", condition.Operator.ToString()));
+            }
+
+            return newCondition;
+        }
+
+        protected FilterExpression NegateExpression(dynamic filter)
+        {
+            var type = filter.type as string;
+
+            if(type == "not")
+            {
+                //Recursive call
+                return NegateExpression(filter.left);
+            }
+
+            if (IsRelationalOperator(type))
+            {
+                //Negate operator
+                return NegateCondition(ConvertRelationalExpressionFromDynamic(filter.left));
+            }
+            else // (IsBooleanOperator(type))
+            {
+                //Swap logical operator and negate operands (this is pure Bool algebra)
+                var left = NegateExpression(ConvertFilterExpressionFromDynamic(filter.left));
+                var right = NegateExpression(ConvertFilterExpressionFromDynamic(filter.right));
+
+                var filterExp = new FilterExpression();
+                switch (type)
+                {
+                    case "or":
+                        filterExp.FilterOperator = LogicalOperator.And;
+                        break;
+                    case "and":
+                        filterExp.FilterOperator = LogicalOperator.Or;
+                        break;
+                }
+                return filterExp;
             }
         }
 
@@ -96,23 +158,29 @@ namespace EdgeProxy
             else if(IsBooleanOperator(type))
             {
                 //Process child filters recursively
-                var left = ConvertFilterExpressionFromDynamic(filter.left);
-                var right = ConvertFilterExpressionFromDynamic(filter.right);
+                FilterExpression left = null, right = null; 
 
                 var filterExp = new FilterExpression();
                 switch (type)
                 {
                     case "or":
                         filterExp.FilterOperator = LogicalOperator.Or;
+                        left = ConvertFilterExpressionFromDynamic(filter.left);
+                        right = ConvertFilterExpressionFromDynamic(filter.right);
                         break;
                     case "and":
-                    default:
                         filterExp.FilterOperator = LogicalOperator.And;
+                        left = ConvertFilterExpressionFromDynamic(filter.left);
+                        right = ConvertFilterExpressionFromDynamic(filter.right);
+                        break;
+                    case "not":
+                        left = NegateExpression(filter.left);
                         break;
                 }
-
+                
                 filterExp.Filters.Add(left);
-                filterExp.Filters.Add(right);
+                if(right != null)
+                    filterExp.Filters.Add(right);  //Optional for "not"
 
                 return filterExp;
             }

@@ -165,32 +165,32 @@ var Guid = require('guid');
         };
         translateMethod(executionContext, function (error, result) {
             if (result.Entities) {
-                if (result.Entities.length > 0) {
-                    //Found
 
-                    //Return a list of entities
-                    var response = {};
-                    response["@odata.context"] = "";
+                //Found
 
-                    var entities = [];
-                    for (var i = 0; i < result.Entities.length; i++) {
-                        var entity = result.Entities[i];
-                        var odataEntity = convertEntityFromDotNetToOData(entity);
-                        odataEntity["@odata.etag"] = "W/\"" + i.toString() + "\"";
-                        entities.push(odataEntity);
-                    }
+                //Return a list of entities
+                var response = {};
+                response["@odata.context"] = "";
 
-                    response.value = entities;
-
-                    fakeXhr.status = 200;
-                    fakeXhr.response = JSON.stringify(response);
-                    fakeXhr.readyState = 4; //Completed
-
-                    //Force callback
-                    if (fakeXhr.onreadystatechange)
-                        fakeXhr.onreadystatechange();
+                var entities = [];
+                for (var i = 0; i < result.Entities.length; i++) {
+                    var entity = result.Entities[i];
+                    var odataEntity = convertEntityFromDotNetToOData(entity);
+                    odataEntity["@odata.etag"] = "W/\"" + i.toString() + "\"";
+                    entities.push(odataEntity);
                 }
+
+                response.value = entities;
+
+                fakeXhr.status = 200;
+                fakeXhr.response = JSON.stringify(response);
+                fakeXhr.readyState = 4; //Completed
+
+                //Force callback
+                if (fakeXhr.onreadystatechange)
+                    fakeXhr.onreadystatechange();
             }
+            
         });
     }
 
