@@ -1,2 +1,65 @@
-# fake-xrm-easy-js
-FakeXrmEasy on Client Side
+# FakeXrmEasy.Js
+
+This project aims to provide mocks already implemented for Web API calls made from Javascript.
+
+# Goals
+
+To be able to unit test Dynamics CRM Web Api calls as easily as possible, given that:
+
+- We already had a backend implementation (FakeXrmEasy in C#) where we have mocks for many different types of queries already implemented, like
+  QueryExpresions, QueryByAttribute, FetchXml, etc. 
+- The query engine is really robust (800+ tests) and it is what took most of the time to develop (> 1 year, although not full time on this)
+- The focus will be on unit testing Web API calls, not the Xrm Page, as there are other projects for that already.
+- Executing web api queries doesn't involve any access to the DOM, which means we could even use Node for testing. 
+  This is also the same for the Xrm Page, where we shouldn't access the DOM (i.e. via jQuery) as it is unsupported.
+  The only exception would be custom web resources but we can live with it because we can still separate JS logic
+  from the logic which accesses the DOM (HTML). 
+- We want to run unit tests as fast as possible.
+ 
+
+
+# The Approach
+
+Given the above, the approach chosen is the following:
+
+- We'll use nodejs and the NodeTools for VisualStudio extension as there is a seamless integration between node and JS test runners like Mocha. A
+  And we are also using Node because it will allow us to call the existing FakeXrmEasy implementation (C#) from Node.
+
+So roughly, the following steps:
+
+    -> 1) XMLHttpRequests automatically intercepted to:
+    -> 2) Parse OData Query 
+    -> 3) Using Edge Js, translate OData into a QueryExpression 
+    -> 4) Execute query using FakeXrmEasy (C#), which works really well
+    -> 5) Return results to Node, which will be a list of entities mainly.
+    -> 6) Compose a response following Web Api specification
+
+More details:
+
+- 1) Ajax calls will be automatically intercepted by the framework, and whenever a call is made to the API endpoint, we'll process it. 
+  Which will make unit testin web API even way more easy than trying to use a library like Sinon, cause reponses will be handled automatically.
+- The processing will involve:
+      * 2) Parsing the OData query. We'll use an amazing existing npm package for that made by OAuth.
+      * 3) Once parsed, we'll compose a QueryExpression object which will be sent to a Edgejs proxy.
+           The OData query, which was parsed and therefore easy to traverse, will be converted into a QueryExpression
+      * 4) The query is executed in FakeXrmEasy (C#), like any other C# code, this produces a list of entities.
+      * 5) That list will be returned to Node 
+      * 6) The response will be decorated with some properties just to conform to the Web API specification (like etags and so on...)
+
+
+# Backlog
+
+Done:
+- Queries: Implemented $select
+- Queries: Implemented $filter (relational and boolean expressions)
+
+To Do:
+- CRUD
+- Queries: Implement $filter functions (contains, startsWith, etc)
+- Queries: Implement $expand functions (contains, startsWith, etc)
+- Queries: Implement $orderby functions (contains, startsWith, etc)
+- Queries: Implement $top functions (contains, startsWith, etc)
+- Queries: Implement lookup filtering (by related entities)
+
+
+    
