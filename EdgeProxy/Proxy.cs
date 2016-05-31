@@ -81,6 +81,17 @@ namespace EdgeProxy
                     newCondition.Operator = ConditionOperator.NotEqual;
                     return newCondition;
 
+                case "gt":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.GreaterThan;
+                    return newCondition;
+
+                case "ge":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.GreaterEqual;
+                    return newCondition;
+
+
                 default:
 
                     throw new Exception(string.Format("{0} operator not yet supported", type));
