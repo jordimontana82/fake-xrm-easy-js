@@ -47,6 +47,8 @@ More details:
       * 5) That list will be returned to Node 
       * 6) The response will be decorated with some properties just to conform to the Web API specification (like etags and so on...)
 
+A POC for this architecture is already in place and running OData queries smoothly for operators which have been implemented so far (mainly $select and $filter).
+So now it is a matter of extending it for all the other cases (see backlog below).
 
 # Backlog
 
