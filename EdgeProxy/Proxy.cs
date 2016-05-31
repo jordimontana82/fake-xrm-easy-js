@@ -91,6 +91,15 @@ namespace EdgeProxy
                     newCondition.Operator = ConditionOperator.GreaterEqual;
                     return newCondition;
 
+                case "lt":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.LessThan;
+                    return newCondition;
+
+                case "le":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.LessEqual;
+                    return newCondition;
 
                 default:
 
