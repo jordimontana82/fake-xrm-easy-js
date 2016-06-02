@@ -249,7 +249,7 @@ describe("XHR Get", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=contains('Company',name)", function (data) {
+        queryHelper.retrieveMultiple("accounts?$filter=contains(name,'Company')", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 3);
