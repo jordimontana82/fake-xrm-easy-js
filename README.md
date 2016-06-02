@@ -55,14 +55,15 @@ So now it is a matter of extending it for all the other cases (see backlog below
 Done:
 - Queries: Implemented $select
 - Queries: Implemented $filter (relational and boolean expressions)
+- Queries: Implement $filter functions (startsWith, endsWith)
 
 To Do:
 - CRUD
-- Queries: Implement $filter functions (contains, startsWith, etc)
-- Queries: Implement $expand functions (contains, startsWith, etc)
-- Queries: Implement $orderby functions (contains, startsWith, etc)
-- Queries: Implement $top functions (contains, startsWith, etc)
-- Queries: Implement lookup filtering (by related entities)
+- Queries: Implement $filter functions (contains -giving error in oauth-)
+- Queries: Implement $expand functions
+- Queries: Implement $orderby functions 
+- Queries: Implement $top functions
+- Queries: Implement lookup filtering
 
 
     

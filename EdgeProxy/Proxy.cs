@@ -43,9 +43,16 @@ namespace EdgeProxy
             return type == "and" || type == "or" || type == "not";
         }
 
+        protected bool IsFunctionCall(string type)
+        {
+            return type == "functioncall";
+        }
+
         protected bool IsRelationalOperator(string type)
         {
-            return !IsBooleanOperator(type) && !IsLiteral(type);
+            return !IsBooleanOperator(type) 
+                    && !IsLiteral(type)
+                    && !IsFunctionCall(type);
         }
 
         protected bool IsLiteral(string type)
@@ -104,6 +111,51 @@ namespace EdgeProxy
                 default:
 
                     throw new Exception(string.Format("{0} operator not yet supported", type));
+            }
+        }
+
+        protected ConditionExpression ConvertFunctionCallFromDynamic(dynamic filter)
+        {
+            var type = filter.func as string;
+
+            var isProperty = (filter.args[0].type as string).Equals("property");
+            if (!isProperty)
+            {
+                throw new Exception("Condition expression must have a property in the left hand side of the expression");
+            }
+            var property = filter.args[0].name as string;
+
+            var isLiteral = (filter.args[1].type as string).Equals("literal");
+            if (!isLiteral)
+            {
+                throw new Exception("Condition expression must have a literal in the right hand side of the expression");
+            }
+            var literal = filter.args[1].value as object;
+
+            var newCondition = new ConditionExpression(property, ConditionOperator.Equal, literal);
+            switch (type)
+            {
+                case "startswith":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.BeginsWith;
+                    return newCondition;
+
+                case "endswith":
+                    //Equals
+                    newCondition.Operator = ConditionOperator.EndsWith;
+                    return newCondition;
+
+                case "contains":
+                    //Equals
+                    literal = string.Format("%{0}%", literal);
+                    newCondition.Values[0] = literal;
+                    newCondition.Operator = ConditionOperator.Like;
+                    return newCondition;
+
+
+                default:
+
+                    throw new Exception(string.Format("{0} function not yet supported", type));
             }
         }
 
@@ -166,7 +218,7 @@ namespace EdgeProxy
         {
             var type = filter.type as string;
 
-            if(IsRelationalOperator(type))
+            if (IsRelationalOperator(type))
             {
                 //Filter with a single condition expression
                 var condition = ConvertRelationalExpressionFromDynamic(filter);
@@ -175,10 +227,18 @@ namespace EdgeProxy
                 return f;
             }
 
-            else if(IsBooleanOperator(type))
+            else if (IsFunctionCall(type)) {
+                //Filter with a single condition expression
+                var condition = ConvertFunctionCallFromDynamic(filter);
+                var f = new FilterExpression(LogicalOperator.And);
+                f.Conditions.Add(condition);
+                return f;
+            }
+
+            else if (IsBooleanOperator(type))
             {
                 //Process child filters recursively
-                FilterExpression left = null, right = null; 
+                FilterExpression left = null, right = null;
 
                 var filterExp = new FilterExpression();
                 switch (type)
@@ -197,9 +257,9 @@ namespace EdgeProxy
                         left = NegateExpression(filter.left);
                         break;
                 }
-                
+
                 filterExp.Filters.Add(left);
-                if(right != null)
+                if (right != null)
                     filterExp.Filters.Add(right);  //Optional for "not"
 
                 return filterExp;

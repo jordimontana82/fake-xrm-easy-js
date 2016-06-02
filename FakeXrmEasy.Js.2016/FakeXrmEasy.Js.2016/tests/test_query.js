@@ -196,6 +196,71 @@ describe("XHR Get", function () {
         assert.isTrue(bWasCalled);
     });
 
+    it("$filter: startsWith test", function () {
+
+        xrmFakedContext.initialize("accounts", [
+            { id: Guid.create(), name: 'A Company', revenue: 3000 },
+            { id: Guid.create(), name: 'Another Company', revenue: 4567 },
+            { id: Guid.create(), name: 'Company 3', revenue: 100001 }
+        ]);
+
+        var bWasCalled = false;
+
+        queryHelper.retrieveMultiple("accounts?$filter=startswith(name,'a')", function (data) {
+            bWasCalled = true;
+
+            assert.equal(data.value.length, 2);
+            assert.equal(data.value[0].name, "A Company");
+            assert.equal(data.value[1].name, "Another Company");
+        });
+
+        assert.isTrue(bWasCalled);
+    });
+
+    it("$filter: endsWith test", function () {
+
+        xrmFakedContext.initialize("accounts", [
+            { id: Guid.create(), name: 'A Company', revenue: 3000 },
+            { id: Guid.create(), name: 'Another Company', revenue: 4567 },
+            { id: Guid.create(), name: 'Company 3', revenue: 100001 }
+        ]);
+
+        var bWasCalled = false;
+
+        queryHelper.retrieveMultiple("accounts?$filter=endswith(name,'Company')", function (data) {
+            bWasCalled = true;
+
+            assert.equal(data.value.length, 2);
+            assert.equal(data.value[0].name, "A Company");
+            assert.equal(data.value[1].name, "Another Company");
+        });
+
+        assert.isTrue(bWasCalled);
+    });
+
+    it("$filter: contains test", function () {
+
+        xrmFakedContext.initialize("accounts", [
+            { id: Guid.create(), name: 'A Company', revenue: 3000 },
+            { id: Guid.create(), name: 'Another Company', revenue: 4567 },
+            { id: Guid.create(), name: 'Company 3', revenue: 100001 },
+            { id: Guid.create(), name: 'Other', revenue: 3 }
+        ]);
+
+        var bWasCalled = false;
+
+        queryHelper.retrieveMultiple("accounts?$filter=contains('Company',name)", function (data) {
+            bWasCalled = true;
+
+            assert.equal(data.value.length, 3);
+            assert.equal(data.value[0].name, "A Company");
+            assert.equal(data.value[1].name, "Another Company");
+            assert.equal(data.value[2].name, "Company 3");
+        });
+
+        assert.isTrue(bWasCalled);
+    });
+
     it("$filter: and test", function () {
 
         xrmFakedContext.initialize("accounts", [
