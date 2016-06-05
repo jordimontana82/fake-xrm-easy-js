@@ -2,6 +2,9 @@
 
 This project aims to provide mocks already implemented for Web API calls made from Javascript. This is a work in progress and way less mature than its C# counterpart.
 
+[![NPM](https://img.shields.io/npm/v/fakexrmeasy.2016.svg)](https://www.npmjs.com/package/fakexrmeasy.2016)
+
+
 # Goals
 
 To be able to unit test Dynamics CRM Web Api calls as easily as possible, given that:

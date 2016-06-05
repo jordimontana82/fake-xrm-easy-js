@@ -1,9 +1,9 @@
 {
   "name": "fakexrmeasy.2016",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "FakeXrmEasy.Js.2016",
-  "main": "index.js",
-  "author": "Jordi",
+  "main": "src/xrmFakedContext.js",
+  "author": "@jordimontana",
   "dependencies": {
     "chai": "^3.5.0",
     "dateformat": "^1.0.12",
