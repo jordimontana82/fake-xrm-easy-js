@@ -29,11 +29,16 @@ var Guid = require('guid');
     //    '../../../EdgeProxy/bin/Debug/EdgeProxy.dll'
 
     //];
-    var translateMethod = edge.func({
-        assemblyFile: dllProxyBasePath + '/EdgeProxy.dll',
-        typeName: 'EdgeProxy.Proxy',
-        methodName: 'TranslateODataQueryToQueryExpression' // This must be Func<object,Task<object>>
-    });
+    var translateMethod = null;
+
+    function initProxy() {
+        translateMethod = edge.func({
+            assemblyFile: dllProxyBasePath + '/EdgeProxy.dll',
+            typeName: 'EdgeProxy.Proxy',
+            methodName: 'TranslateODataQueryToQueryExpression' // This must be Func<object,Task<object>>
+        });
+    }
+    initProxy();
 
     function processXhr(fakeXhr) {
         //Only process requests which belong to the CRM URL
@@ -252,11 +257,17 @@ var Guid = require('guid');
 
     exports.Xrm = xrm;
     exports.data = _data;
+    exports.setProxyPath = function (path) {
+        dllProxyBasePath = path;
+        initProxy();
+    };
     exports.initialize = function (entityname, entities) {
         if (!entities.length) {
             throw new "Entities must be a JS array";
         }
-        
+
+        _data = [];
+
         var l = entities.length;
         for (var i = 0; i < l; i++) {
             var e = entities[i];

@@ -7,7 +7,7 @@ var queryHelper = require('../webresources/queryHelper.js');
 var assert = require('chai').assert;
 var Guid = require('guid');
 
-describe("XHR Get", function () {
+describe("Web API", function () {
     it("$select: it should retrieve fields specified in $select clause", function () {
 
         xrmFakedContext.initialize("accounts", [
