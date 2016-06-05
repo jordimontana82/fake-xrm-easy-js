@@ -38,7 +38,6 @@ var Guid = require('guid');
             methodName: 'TranslateODataQueryToQueryExpression' // This must be Func<object,Task<object>>
         });
     }
-    initProxy();
 
     function processXhr(fakeXhr) {
         //Only process requests which belong to the CRM URL
@@ -262,6 +261,8 @@ var Guid = require('guid');
         initProxy();
     };
     exports.initialize = function (entityname, entities) {
+        initProxy();
+
         if (!entities.length) {
             throw new "Entities must be a JS array";
         }

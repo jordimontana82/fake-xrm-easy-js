@@ -39,11 +39,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="typings\" />
+    <Folder Include="typings\assertion-error\" />
+    <Folder Include="typings\chai\" />
     <Folder Include="typings\mocha\" />
     <Folder Include="typings\node\" />
     <Folder Include="webresources\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="typings\assertion-error\assertion-error.d.ts" />
+    <TypeScriptCompile Include="typings\chai\chai.d.ts" />
     <TypeScriptCompile Include="typings\mocha\mocha.d.ts" />
     <TypeScriptCompile Include="typings\node\node.d.ts" />
     <TypeScriptCompile Include="typings\tsd.d.ts" />

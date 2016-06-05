@@ -1,6 +1,8 @@
 ﻿global.XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var xrmFakedContext = require('fakexrmeasy.2016');
+
+xrmFakedContext.setProxyPath('../EdgeProxy/bin/Debug');
 global.Xrm = xrmFakedContext.Xrm;
 
 var queryHelper = require('./webresources/queryHelper.js');
