@@ -58,11 +58,10 @@ So now it is a matter of extending it for all the other cases (see backlog below
 Done:
 - Queries: Implemented $select
 - Queries: Implemented $filter (relational and boolean expressions)
-- Queries: Implement $filter functions (startsWith, endsWith)
+- Queries: Implement $filter functions (startsWith, endsWith, substringof)
 
 To Do:
 - CRUD
-- Queries: Implement $filter functions (contains -giving error in oauth-)
 - Queries: Implement $expand functions
 - Queries: Implement $orderby functions 
 - Queries: Implement $top functions

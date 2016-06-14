@@ -114,23 +114,55 @@ namespace EdgeProxy
             }
         }
 
+        protected bool IsPropertyType(string type)
+        {
+            return type.Equals("property");
+        }
+
+        protected bool IsLiteralType(string type)
+        {
+            return type.Equals("literal");
+        }
+
         protected ConditionExpression ConvertFunctionCallFromDynamic(dynamic filter)
         {
             var type = filter.func as string;
 
-            var isProperty = (filter.args[0].type as string).Equals("property");
-            if (!isProperty)
-            {
-                throw new Exception("Condition expression must have a property in the left hand side of the expression");
-            }
-            var property = filter.args[0].name as string;
+            
+            var isLeftAProperty = IsPropertyType((filter.args[0].type as string));
+            var isLeftALiteral = IsLiteralType((filter.args[0].type as string));
 
-            var isLiteral = (filter.args[1].type as string).Equals("literal");
-            if (!isLiteral)
+            var isRightAProperty = IsPropertyType((filter.args[1].type as string));
+            var isRightALiteral = IsLiteralType((filter.args[1].type as string));
+
+            if (type.Equals("substringof"))
             {
-                throw new Exception("Condition expression must have a literal in the right hand side of the expression");
+                if(!isLeftALiteral || !isRightAProperty)
+                {
+                    throw new Exception("Condition expression 'substringof' must have a literal in the left hand side of the expression and a property in the right hand side.");
+                }
             }
-            var literal = filter.args[1].value as object;
+            else
+            {
+                if (!isLeftAProperty || !isRightALiteral)
+                {
+                    throw new Exception("Condition expression must have a property in the left hand side of the expression and a literal in the right hand side.");
+                }
+            }
+
+            string property;
+            object literal;
+
+            if(isLeftAProperty)
+                property = filter.args[0].name as string;
+            else
+                property = filter.args[1].name as string;
+
+            if (isLeftALiteral)
+                literal = filter.args[0].value as object;
+            else
+                literal = filter.args[1].value as object;
+
 
             var newCondition = new ConditionExpression(property, ConditionOperator.Equal, literal);
             switch (type)
@@ -145,7 +177,7 @@ namespace EdgeProxy
                     newCondition.Operator = ConditionOperator.EndsWith;
                     return newCondition;
 
-                case "contains":
+                case "substringof":
                     //Equals
                     literal = string.Format("%{0}%", literal);
                     newCondition.Values[0] = literal;

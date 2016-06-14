@@ -238,7 +238,7 @@ describe("Web API", function () {
         assert.isTrue(bWasCalled);
     });
 
-    it("$filter: contains test", function () {
+    it("$filter: substringof test", function () {
 
         xrmFakedContext.initialize("accounts", [
             { id: Guid.create(), name: 'A Company', revenue: 3000 },
@@ -249,7 +249,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=contains(name,'Company')", function (data) {
+        queryHelper.retrieveMultiple("accounts?$filter=substringof('Company', name)", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 3);
