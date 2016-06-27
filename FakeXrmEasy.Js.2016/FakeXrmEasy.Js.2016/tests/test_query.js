@@ -313,7 +313,19 @@ describe("Web API", function () {
             { id: Guid.create(), name: 'Company 6', revenue: 100001 }
         ]);
 
-        queryHelper.get("accounts?$select=name,revenue&$top=3");
+
+        var bWasCalled = false;
+
+        queryHelper.retrieveMultiple("accounts?$select=name&$top=3", function (data) {
+            bWasCalled = true;
+
+            assert.equal(data.value.length, 3);
+            assert.equal(data.value[0].name, "Company 1");
+            assert.equal(data.value[1].name, "Company 2");
+            assert.equal(data.value[2].name, "Company 3");
+        });
+
+        assert.isTrue(bWasCalled);
     });
 });
 

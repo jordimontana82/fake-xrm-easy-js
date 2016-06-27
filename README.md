@@ -58,13 +58,13 @@ So now it is a matter of extending it for all the other cases (see backlog below
 Done:
 - Queries: Implemented $select
 - Queries: Implemented $filter (relational and boolean expressions)
-- Queries: Implement $filter functions (startsWith, endsWith, substringof)
+- Queries: Implemented $filter functions (startsWith, endsWith, substringof)
+- Queries: Implemented $top functions
 
 To Do:
 - CRUD
 - Queries: Implement $expand functions
 - Queries: Implement $orderby functions 
-- Queries: Implement $top functions
 - Queries: Implement lookup filtering
 
 

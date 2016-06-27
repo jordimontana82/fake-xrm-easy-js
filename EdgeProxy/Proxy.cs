@@ -13,10 +13,13 @@ namespace EdgeProxy
     {
         protected QueryExpression ConvertQueryFromDynamic(dynamic query)
         {
+            var queryProperties = query as Dictionary<string, object>;
+
             var qe = new QueryExpression();
             qe.EntityName = query.EntityName as string;
-
-            if(query.ColumnSet is object[])
+            
+            if(Extensions.DynamicContainsProperty(query, "ColumnSet") &&
+                query.ColumnSet is object[])
             {
                 var cols = query.ColumnSet as object[];
                 qe.ColumnSet =  new ColumnSet(cols.Select(c => c.ToString()).ToArray());
@@ -27,12 +30,19 @@ namespace EdgeProxy
             }
 
             //Criteria
-            if(query.Criteria != null)
+            if(Extensions.DynamicContainsProperty(query, "Criteria") && 
+                query.Criteria != null)
             {
                 var criteria = query.Criteria as IDictionary<string, object>;
                 qe.Criteria = ConvertFilterExpressionFromDynamic(criteria);
             }
 
+            //Top Count
+            if (Extensions.DynamicContainsProperty(query, "TopCount") && 
+                query.TopCount != null)
+            {
+                qe.TopCount = (query.TopCount as int?).Value;
+            }
             return qe;
         }
 

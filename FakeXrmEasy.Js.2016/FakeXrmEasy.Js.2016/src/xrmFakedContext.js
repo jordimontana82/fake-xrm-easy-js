@@ -104,6 +104,10 @@ var Guid = require('guid');
         if (parsedQuery['$filter']) {
             qe.Criteria = parsedQuery['$filter'];
         }
+
+        if (parsedQuery['$top']) {
+            qe.TopCount = parsedQuery['$top'];
+        }
         return qe;
     }
 
