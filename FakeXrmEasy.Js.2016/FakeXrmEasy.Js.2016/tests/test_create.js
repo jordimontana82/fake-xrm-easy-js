@@ -7,7 +7,7 @@ var WebApiClient = require('../webresources/WebApiClient.js');
 var assert = require('chai').assert;
 
 
-describe("XHR Create", function () {
+describe("Web API Create: basic", function () {
     it("it should create an account with properties", function () {
         WebApiClient.create("accounts", {
             "name": "Sample Account",
