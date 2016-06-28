@@ -63,9 +63,9 @@ Done:
 
 To Do:
 - [Create operations](https://msdn.microsoft.com/en-us/library/gg328090.aspx)
--    Basic create
--    Create related entities in one operation
--    Associate entities on Create
+     * Basic create
+     * Create related entities in one operation
+     * Associate entities on Create
 
 - Retrieve, Update, Delete
 - Queries: Implement $expand functions
