@@ -60,10 +60,10 @@ Done:
 - Queries: Implemented $filter (relational and boolean expressions)
 - Queries: Implemented $filter functions (startsWith, endsWith, substringof)
 - Queries: Implemented $top functions
+- Create: basic create
 
 To Do:
 - [Create operations](https://msdn.microsoft.com/en-us/library/gg328090.aspx)
-     * Basic create
      * Create related entities in one operation
      * Associate entities on Create
 
