@@ -45,7 +45,7 @@
     </Compile>
     <Compile Include="webresources\basic.js" />
     <Compile Include="webresources\createAccount.js" />
-    <Compile Include="webresources\queryHelper.js" />
+    <Compile Include="webresources\WebApiClient.js" />
     <Content Include="package.json" />
     <Content Include="ProxyInitialize.cs" />
     <Content Include="README.md" />

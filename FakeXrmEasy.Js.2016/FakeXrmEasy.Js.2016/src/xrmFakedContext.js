@@ -5,7 +5,9 @@ var Guid = require('guid');
 
 
 (function (exports) {
-    
+
+    var apiVersion = 'v8.1';
+
     var xrm = {
         Page: {
             context: {
@@ -49,12 +51,13 @@ var Guid = require('guid');
         fakeXhr.relativeApiUrl = fakeXhr.url.replace(xrm.Page.context.getClientUrl(), "");
         
         //Check api v8
-        if (fakeXhr.relativeApiUrl.indexOf("/api/data/v8.0/") < 0) {
-            throw 'Only Web API Requests are supported (v8.0)';
+        if (fakeXhr.relativeApiUrl.indexOf("/api/data/v8") < 0) {
+            throw 'Only Web API Requests are supported (v8.x)';
         }
         
         //get url part after version
         fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/v8.0/", "");
+        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/v8.1/", "");
 
         //Undo substring and parse body
         if (fakeXhr.requestHeaders["Content-Type"] &&
@@ -141,10 +144,30 @@ var Guid = require('guid');
         var entityName = fakeXhr.relativeUrl;
         var jsonData = JSON.parse(fakeXhr.requestBody);
 
+        
         //Create a new record of the specified entity in the context
-        jsonData.id = Guid.create();
+        jsonData.id = Guid.create().toString();
+
+        if (!_data[entityName]) {
+            _data[entityName] = [];
+        }
 
         _data[entityName][jsonData.id] = jsonData;
+
+        //Compose fake response
+        var response = {};
+
+        fakeXhr.status = 204;
+        fakeXhr.response = JSON.stringify({});
+        fakeXhr.readyState = 4; //Completed
+
+        //Headers
+        var entityIdUrl = xrm.Page.context.getClientUrl() + '/api/data/' + apiVersion + '/' + entityName + '(' + jsonData.id + ')'; 
+        fakeXhr.setResponseHeader("OData-EntityId", entityIdUrl);
+
+        //Force callback
+        if (fakeXhr.onreadystatechange)
+            fakeXhr.onreadystatechange();
     }
 
     function processXhrGet(fakeXhr) {
@@ -230,6 +253,12 @@ var Guid = require('guid');
     };
     FakeXMLHttpRequest.prototype.setRequestHeader = function (key, value) {
         this.requestHeaders[key] = value; 
+    };
+    FakeXMLHttpRequest.prototype.getRequestHeader = function (key) {
+        return this.requestHeaders[key];
+    };
+    FakeXMLHttpRequest.prototype.setResponseHeader = function (key, value) {
+        this.responseHeaders[key] = value;
     };
     FakeXMLHttpRequest.prototype.getResponseHeader = function (key) {
         return this.responseHeaders[key];

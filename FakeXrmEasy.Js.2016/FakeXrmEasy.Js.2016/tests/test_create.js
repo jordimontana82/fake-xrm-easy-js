@@ -3,16 +3,26 @@
 var xrmFakedContext = require('../src/xrmFakedContext.js');
 global.Xrm = xrmFakedContext.Xrm;
 
-var accountHelper = require('../webresources/createAccount.js');
+var WebApiClient = require('../webresources/WebApiClient.js');
 var assert = require('chai').assert;
 
 
 describe("XHR Create", function () {
-    it("it should create an account with name", function () {
-        accountHelper.createAccount({ name : "Company Name" });
+    it("it should create an account with properties", function () {
+        WebApiClient.create("accounts", {
+            "name": "Sample Account",
+            "creditonhold": false,
+            "address1_latitude": 47.639583,
+            "description": "This is the description of the sample account",
+            "revenue": 5000000,
+            "accountcategorycode": 1
+        }, function success(guid) {
+            //entityid was returned
 
-        //entity exists in the context with name property
-        assert.equal(xrmFakedContext.data["accounts"].name, "Company Name");
+            assert.equal(xrmFakedContext.data["accounts"][guid].name, "Sample Account");
+        });
+
+        
     });
 });
 

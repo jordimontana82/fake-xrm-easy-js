@@ -3,7 +3,7 @@
 var xrmFakedContext = require('../src/xrmFakedContext.js');
 global.Xrm = xrmFakedContext.Xrm;
 
-var queryHelper = require('../webresources/queryHelper.js');
+var WebApiClient = require('../webresources/WebApiClient.js');
 var assert = require('chai').assert;
 var Guid = require('guid');
 
@@ -17,7 +17,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$select=name,revenue", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$select=name,revenue", function (data) {
             bWasCalled = true;
             assert.equal(data.value.length, 2); //2 records
             assert.equal(data.value[0].name, "Company 1"); 
@@ -40,7 +40,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts", function (data) {
+        WebApiClient.retrieveMultiple("accounts", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2); //2 records
@@ -64,7 +64,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue eq 100001", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue eq 100001", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 1); 
@@ -84,7 +84,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue eq 100000", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue eq 100000", function (data) {
             bWasCalled = true;
             assert.equal(data.value.length, 0);
         });
@@ -102,7 +102,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue ne 100001", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue ne 100001", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -123,7 +123,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue gt 3000", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue gt 3000", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -144,7 +144,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue ge 4567", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue ge 4567", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -165,7 +165,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue lt 4567", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue lt 4567", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 1);
@@ -185,7 +185,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue le 4567", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue le 4567", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -206,7 +206,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=startswith(name,'a')", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=startswith(name,'a')", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -227,7 +227,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=endswith(name,'Company')", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=endswith(name,'Company')", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -249,7 +249,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=substringof('Company', name)", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=substringof('Company', name)", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 3);
@@ -271,7 +271,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue le 4567 and name eq 'Company 1'", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue le 4567 and name eq 'Company 1'", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 1);
@@ -291,7 +291,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$filter=revenue eq 4567 or revenue eq 100001", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue eq 4567 or revenue eq 100001", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 2);
@@ -316,7 +316,7 @@ describe("Web API", function () {
 
         var bWasCalled = false;
 
-        queryHelper.retrieveMultiple("accounts?$select=name&$top=3", function (data) {
+        WebApiClient.retrieveMultiple("accounts?$select=name&$top=3", function (data) {
             bWasCalled = true;
 
             assert.equal(data.value.length, 3);
