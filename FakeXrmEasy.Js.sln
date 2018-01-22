@@ -36,13 +36,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeXrmEasy.EdgeProxy.v2015
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeXrmEasy.EdgeProxy.v2013", "FakeXrmEasy.EdgeProxy.v2013\FakeXrmEasy.EdgeProxy.v2013.csproj", "{AEC468D0-4327-465D-B512-42FE5B14D47B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeXrmEasy.EdgeProxy.Shared.Tests", "FakeXrmEasy.EdgeProxy.Shared.Tests\FakeXrmEasy.EdgeProxy.Shared.Tests.csproj", "{000A5E98-3A1E-4972-BACE-F8A3D21C7DD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeXrmEasy.EdgeProxy.v2011.Tests", "FakeXrmEasy.EdgeProxy.v2011.Tests\FakeXrmEasy.EdgeProxy.v2011.Tests.csproj", "{47441263-32E5-40ED-8931-C6C2D70F776A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FakeXrmEasy.EdgeProxy.Shared.Tests", "FakeXrmEasy.EdgeProxy.Shared.Tests\FakeXrmEasy.EdgeProxy.Shared.Tests.shproj", "{311DDB82-3ED4-4287-BC86-760D4E7DB7C3}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{03dc7738-a7be-425f-8f45-39194e36fba3}*SharedItemsImports = 4
 		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{09282db6-5b2e-4e03-b36d-2be96a2a2fc2}*SharedItemsImports = 13
 		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{220db8fe-0e80-4e4c-a0bc-4cdb09f6dc84}*SharedItemsImports = 4
+		FakeXrmEasy.EdgeProxy.Shared.Tests\FakeXrmEasy.EdgeProxy.Shared.Tests.projitems*{311ddb82-3ed4-4287-bc86-760d4e7db7c3}*SharedItemsImports = 13
+		FakeXrmEasy.EdgeProxy.Shared.Tests\FakeXrmEasy.EdgeProxy.Shared.Tests.projitems*{47441263-32e5-40ed-8931-c6c2d70f776a}*SharedItemsImports = 4
 		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{89b0b9e8-9a4c-4450-a23c-d5f91c8d0e07}*SharedItemsImports = 4
 		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{95edf6fa-c930-4cfa-9ac3-510ac337cec1}*SharedItemsImports = 4
 		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{aec468d0-4327-465d-b512-42fe5b14d47b}*SharedItemsImports = 4
@@ -104,10 +108,10 @@ Global
 		{AEC468D0-4327-465D-B512-42FE5B14D47B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEC468D0-4327-465D-B512-42FE5B14D47B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEC468D0-4327-465D-B512-42FE5B14D47B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{000A5E98-3A1E-4972-BACE-F8A3D21C7DD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{000A5E98-3A1E-4972-BACE-F8A3D21C7DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{000A5E98-3A1E-4972-BACE-F8A3D21C7DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{000A5E98-3A1E-4972-BACE-F8A3D21C7DD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47441263-32E5-40ED-8931-C6C2D70F776A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47441263-32E5-40ED-8931-C6C2D70F776A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47441263-32E5-40ED-8931-C6C2D70F776A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47441263-32E5-40ED-8931-C6C2D70F776A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

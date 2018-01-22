@@ -7,7 +7,7 @@ using FakeXrmEasy;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 
-namespace EdgeProxy
+namespace FakeXrmEasy.EdgeProxy
 {
     public class Proxy
     {
