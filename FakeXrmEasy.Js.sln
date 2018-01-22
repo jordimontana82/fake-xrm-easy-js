@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FakeXrmEasy.Js.2016", "FakeXrmEasy.Js.2016\FakeXrmEasy.Js.2016\FakeXrmEasy.Js.2016.njsproj", "{DE96AB1D-01E4-47D5-8A92-F091B9130C75}"
 EndProject
@@ -22,7 +22,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "TestNpm", "TestNpm\TestNpm.njsproj", "{15BAA3DF-064F-42DF-A190-99E8204080E7}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "FakeXrmEasy.EdgeProxy.Shared", "FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.shproj", "{09282DB6-5B2E-4E03-B36D-2BE96A2A2FC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeXrmEasy.EdgeProxy.v2011", "FakeXrmEasy.EdgeProxy.v2011\FakeXrmEasy.EdgeProxy.v2011.csproj", "{95EDF6FA-C930-4CFA-9AC3-510AC337CEC1}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{09282db6-5b2e-4e03-b36d-2be96a2a2fc2}*SharedItemsImports = 13
+		FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems*{95edf6fa-c930-4cfa-9ac3-510ac337cec1}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -56,6 +64,10 @@ Global
 		{15BAA3DF-064F-42DF-A190-99E8204080E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15BAA3DF-064F-42DF-A190-99E8204080E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15BAA3DF-064F-42DF-A190-99E8204080E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95EDF6FA-C930-4CFA-9AC3-510AC337CEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95EDF6FA-C930-4CFA-9AC3-510AC337CEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95EDF6FA-C930-4CFA-9AC3-510AC337CEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95EDF6FA-C930-4CFA-9AC3-510AC337CEC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
