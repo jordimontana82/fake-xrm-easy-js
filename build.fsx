@@ -200,32 +200,32 @@ Target "BuildFakeXrmEasyEdgeProxy.Tests.9" (fun _->
 )
 
 Target "Test.2011" (fun _ ->
-    !! (testDir @@ @"\" + folder2011 @@ @"\" + folder2011 + ".dll")
+    !! (testDir + @"\" + folder2011 + @".Tests\" + folder2011 + ".Tests.dll")
       |> xUnit2 (fun p -> { p with HtmlOutputPath = Some (testDir @@ "xunit.2011.html") })
 )
 
 Target "Test.2013" (fun _ ->
-    !! (testDir @@ @"\" + folder2013 @@ @"\" + folder2013 + ".dll")
+    !! (testDir + @"\" + folder2013 + @".Tests\" + folder2013 + ".Tests.dll")
       |> xUnit2 (fun p -> { p with HtmlOutputPath = Some (testDir @@ "xunit.2013.html") })
 )
 
 Target "Test.2015" (fun _ ->
-    !! (testDir @@ @"\" + folder2015 @@ @"\" + folder2015 + ".dll")
+    !! (testDir + @"\" + folder2015 + @".Tests\" + folder2015 + ".Tests.dll")
       |> xUnit2 (fun p -> { p with HtmlOutputPath = Some (testDir @@ "xunit.2015.html") })
 )
 
 Target "Test.2016" (fun _ ->
-    !! (testDir @@ @"\" + folder2016 @@ @"\" + folder2016 + ".dll")
+    !! (testDir + @"\" + folder2016 + @".Tests\" + folder2016 + ".Tests.dll")
       |> xUnit2 (fun p -> { p with HtmlOutputPath = Some (testDir @@ "xunit.2016.html") })
 )
 
 Target "Test.365" (fun _ ->
-    !! (testDir @@ @"\" + folder365 @@ @"\" + folder365 + ".dll")
+    !! (testDir + @"\" + folder365 + @".Tests\" + folder365 + ".Tests.dll")
       |> xUnit2 (fun p -> { p with HtmlOutputPath = Some (testDir @@ "xunit.365.html") })
 )
 
 Target "Test.9" (fun _ ->
-    !! (testDir @@ @"\" + folder9 @@ @"\" + folder9 + ".dll")
+    !! (testDir + @"\" + folder9 + @".Tests\" + folder9 + ".Tests.dll")
       |> xUnit2 (fun p -> { p with HtmlOutputPath = Some (testDir @@ "xunit.9.html") })
 )
 
@@ -371,7 +371,7 @@ Target "CodeCoverage.2013" (fun _ ->
 
 Target "CodeCoverage.2015" (fun _ ->
     OpenCover (fun p -> { p with 
-                                TestRunnerExePath = "./packages/xunit.runner.console.2.2.0/tools/xunit.console.exe"
+                                TestRunnerExePath = "./packages/xunit.runner.console.2.1.0/tools/xunit.console.exe"
                                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console"
                                 Register = RegisterType.RegisterUser
                                 WorkingDir = (testDir @@ @"\" + folder2015 + ".Tests")
@@ -383,7 +383,7 @@ Target "CodeCoverage.2015" (fun _ ->
 
 Target "CodeCoverage.2016" (fun _ ->
     OpenCover (fun p -> { p with 
-                                TestRunnerExePath = "./packages/xunit.runner.console.2.2.0/tools/xunit.console.exe"
+                                TestRunnerExePath = "./packages/xunit.runner.console.2.1.0/tools/xunit.console.exe"
                                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console"
                                 Register = RegisterType.RegisterUser
                                 WorkingDir = (testDir @@ @"\" + folder2016 + ".Tests")
@@ -395,7 +395,7 @@ Target "CodeCoverage.2016" (fun _ ->
 
 Target "CodeCoverage.365" (fun _ ->
     OpenCover (fun p -> { p with 
-                                TestRunnerExePath = "./packages/xunit.runner.console.2.2.0/tools/xunit.console.exe"
+                                TestRunnerExePath = "./packages/xunit.runner.console.2.1.0/tools/xunit.console.exe"
                                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console"
                                 Register = RegisterType.RegisterUser
                                 WorkingDir = (testDir @@ @"\" + folder365 + ".Tests")
@@ -407,7 +407,7 @@ Target "CodeCoverage.365" (fun _ ->
 
 Target "CodeCoverage.9" (fun _ ->
     OpenCover (fun p -> { p with 
-                                TestRunnerExePath = "./packages/xunit.runner.console.2.2.0/tools/xunit.console.exe"
+                                TestRunnerExePath = "./packages/xunit.runner.console.2.1.0/tools/xunit.console.exe"
                                 ExePath = "./packages/OpenCover.4.6.519/tools/OpenCover.Console"
                                 Register = RegisterType.RegisterUser
                                 WorkingDir = (testDir @@ @"\" + folder9 + ".Tests")
@@ -430,6 +430,7 @@ Target "ReportCodeCoverage" (fun _ ->
 Target "ReplaceVersion" (fun _ ->
     RegexReplaceInFileWithEncoding previousVersion version System.Text.Encoding.UTF8 "README.md"
 )
+
 
 "Clean"
   ==> "RestorePackages"
@@ -464,5 +465,6 @@ Target "ReplaceVersion" (fun _ ->
   ==> "Publish"
   ==> "NuGet"
   ==> "PublishNuGet"
-  
+
+
 RunTargetOrDefault "NuGet"

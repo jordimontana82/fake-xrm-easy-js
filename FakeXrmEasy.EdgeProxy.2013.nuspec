@@ -22,6 +22,6 @@
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="..\Publish\FakeXrmEasy\FakeXrmEasy.EdgeProxy.v2013.dll" target="lib\net452\FakeXrmEasy.EdgeProxy.v2013.dll" />
+    <file src="..\Publish\FakeXrmEasy.EdgeProxy.v2013\FakeXrmEasy.EdgeProxy.v2013.dll" target="lib\net452\FakeXrmEasy.EdgeProxy.v2013.dll" />
   </files>
 </package>

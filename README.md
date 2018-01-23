@@ -1,4 +1,4 @@
-# FakeXrmEasy.Js
+﻿# FakeXrmEasy.Js
 
 This project aims to provide mocks already implemented for Web API calls made from Javascript. This is a work in progress and way less mature than its C# counterpart.
 
