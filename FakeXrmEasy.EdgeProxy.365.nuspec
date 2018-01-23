@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>FakeXrmEasy.EdgeProxy.v365</id>
+    <version>0.0.1</version>
+    <authors>@jordimontana</authors>
+    <owners>@jordimontana</owners>
+    <licenseUrl>https://raw.githubusercontent.com/jordimontana82/fake-xrm-easy-js/master/LICENSE.md</licenseUrl>
+    <projectUrl>http://dynamicsvalue.com/home?source=nuget</projectUrl>
+    <iconUrl>http://dynamicsvalue.com/images/fakexrmeasy.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Edge Proxy for FakeXrmEasy to run it as the backend for javascript Dynamics CRM Web API calls.</description>
+    <releaseNotes>@releaseNotes@</releaseNotes>
+    <copyright>Copyright 2014-2018</copyright>
+    <tags>dynamics crm 365 unit testing javascript web api odata xrm mock mocking fake fakes</tags>
+    <dependencies>
+      <dependency id="FakeXrmEasy.365" version="1.39.1" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Activities" targetFramework="net40" />
+      <frameworkAssembly assemblyName="System.Runtime.Serialization" targetFramework="net40" />
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="..\Publish\FakeXrmEasy\FakeXrmEasy.EdgeProxy.v365.dll" target="lib\net452\FakeXrmEasy.EdgeProxy.v365.dll" />
+  </files>
+</package>

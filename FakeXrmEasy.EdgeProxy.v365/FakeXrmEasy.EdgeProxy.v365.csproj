@@ -91,5 +91,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="..\FakeXrmEasy.EdgeProxy.Shared\FakeXrmEasy.EdgeProxy.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
