@@ -47,10 +47,17 @@
     <Compile Include="webresources\createAccount.js" />
     <Compile Include="webresources\WebApiClient.js" />
     <Content Include="package.json" />
+    <Content Include="packages\v2016\package.json" />
+    <Content Include="packages\v365\package.json" />
+    <Content Include="packages\v9\package.json" />
     <Content Include="ProxyInitialize.cs" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="packages\" />
+    <Folder Include="packages\v2016\" />
+    <Folder Include="packages\v365\" />
+    <Folder Include="packages\v9\" />
     <Folder Include="src\" />
     <Folder Include="tests\" />
     <Folder Include="webresources\" />

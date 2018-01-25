@@ -1,5 +1,4 @@
 ﻿var edge = require('edge');
-//var sinon = require('sinon');
 var odataParser = require('odata-parser');
 var Guid = require('guid');
 
@@ -7,6 +6,9 @@ var Guid = require('guid');
 (function (exports) {
 
     var apiVersion = 'v8.1';
+    var _proxyVersion = 'v9';
+    var dllProxyBasePath = '../../../EdgeProxy/bin/Debug';
+
 
     var xrm = {
         Page: {
@@ -25,7 +27,8 @@ var Guid = require('guid');
     var _realXMLHttpRequest = global.XMLHttpRequest;
     var _xhrRequests = [];
 
-    var dllProxyBasePath = '../../../EdgeProxy/bin/Debug';
+    
+
     //var edgeReferences = [
     //    '../../../packages/FakeXrmEasy.2016.1.13.7/lib/net452/FakeXrmEasy.dll',
     //    '../../../EdgeProxy/bin/Debug/EdgeProxy.dll'
@@ -35,7 +38,7 @@ var Guid = require('guid');
 
     function initProxy() {
         translateMethod = edge.func({
-            assemblyFile: dllProxyBasePath + '/EdgeProxy.dll',
+            assemblyFile: dllProxyBasePath + '/FakeXrmEasy.EdgeProxy' + _proxyVersion + '.dll',
             typeName: 'EdgeProxy.Proxy',
             methodName: 'TranslateODataQueryToQueryExpression' // This must be Func<object,Task<object>>
         });
@@ -51,13 +54,12 @@ var Guid = require('guid');
         fakeXhr.relativeApiUrl = fakeXhr.url.replace(xrm.Page.context.getClientUrl(), "");
         
         //Check api v8
-        if (fakeXhr.relativeApiUrl.indexOf("/api/data/v8") < 0) {
-            throw 'Only Web API Requests are supported (v8.x)';
+        if (fakeXhr.relativeApiUrl.indexOf("/api/data/" + apiVersion) < 0) {
+            throw 'Only Web API Requests are supported (' + apiVersion + ')';
         }
         
         //get url part after version
-        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/v8.0/", "");
-        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/v8.1/", "");
+        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/" + apiVersion + "/", "");
 
         //Undo substring and parse body
         if (fakeXhr.requestHeaders["Content-Type"] &&
@@ -274,22 +276,14 @@ var Guid = require('guid');
     //Replace default XHR behavior with the custom fake one
     global.XMLHttpRequest = FakeXMLHttpRequest;
     
-    /*
-    xhr.onCreate = function (req) {
-        requests.push(req);
-
-        //Respond automatically
-        /*req.respond(200, 
-                    { "Content-Type": "application/json" }, 
-                    JSON.stringify({ id: 1 }));
-    };
-
-    //var _fakeServer = sinon.fakeServer.create();
-   */
 
     exports.Xrm = xrm;
     exports.data = _data;
-    exports.setProxyPath = function (path) {
+    exports.setApiVersion = function (version) {
+        apiVersion = version;
+    }
+    exports.setProxyPath = function (path, proxyVersion) {
+        _proxyVersion = proxyVersion;
         dllProxyBasePath = path;
         initProxy();
     };
