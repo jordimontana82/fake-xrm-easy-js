@@ -1,0 +1,44 @@
+{
+  "name": "fakexrmeasy.v2016",
+  "version": "0.0.5",
+  "description": "FakeXrmEasy.Js for Dynamics CRM 2016",
+  "main": "../../src/xrmFakedContext.js",
+  "author": "@jordimontana",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "dateformat": "^1.0.12",
+    "edge": "^5.0.0",
+    "grunt": "^1.0.1",
+    "grunt-env": "^0.4.4",
+    "grunt-istanbul": "^0.7.0",
+    "grunt-mocha-test": "^0.12.7",
+    "guid": "0.0.12",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.4.5",
+    "odata-parser": "^1.4.1",
+    "sinon": "^1.17.4",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "istanbul cover ./node_modules/mocha/bin/_mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordimontana82/fake-xrm-easy-js.git"
+  },
+  "keywords": [
+    "dynamics",
+    "crm",
+    "test",
+    "unit",
+    "testing",
+    "fake",
+    "mock"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jordimontana82/fake-xrm-easy-js/issues"
+  },
+  "homepage": "http://dynamicsvalue.com"
+}
