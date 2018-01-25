@@ -1,7 +1,7 @@
 {
   "name": "fakexrmeasy.v9",
   "version": "0.0.5",
-  "description": "FakeXrmEasy.Js or Dynamics CE v9",
+  "description": "FakeXrmEasy.Js for Dynamics CE v9",
   "main": "../../src/xrmFakedContext.js",
   "author": "@jordimontana",
   "dependencies": {

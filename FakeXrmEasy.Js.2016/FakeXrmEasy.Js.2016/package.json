@@ -1,6 +1,6 @@
 {
-  "name": "fakexrmeasy.2016",
-  "version": "0.0.4",
+  "name": "fakexrmeasy",
+  "version": "0.0.12",
   "description": "FakeXrmEasy.Js.2016",
   "main": "src/xrmFakedContext.js",
   "author": "@jordimontana",

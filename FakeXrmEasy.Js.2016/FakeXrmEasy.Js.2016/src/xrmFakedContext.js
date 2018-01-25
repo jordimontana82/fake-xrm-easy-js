@@ -5,17 +5,27 @@ var Guid = require('guid');
 
 (function (exports) {
 
-    var apiVersion = 'v8.1';
+    var _apiVersion = 'v9.0';
     var _proxyVersion = 'v9';
-    var dllProxyBasePath = '../../../EdgeProxy/bin/Debug';
+    var _dllProxyBasePath = '../../../EdgeProxy/bin/Debug';
 
+    var _fakeCrmUrl = "http://fakecrmurl:5555/fakeOrgName";
 
     var xrm = {
         Page: {
             context: {
                 getClientUrl: function () {
-                    return "http://fakecrmurl:5555/fakeOrgName";
+                    return _fakeCrmUrl;
                 }
+            }
+        }
+    };
+
+    //Override get crm context function to return a dummy url
+    global.GetGlobalContext = function () {
+        return {
+            getClientUrl: function () {
+                return _fakeCrmUrl;
             }
         }
     };
@@ -37,29 +47,55 @@ var Guid = require('guid');
     var translateMethod = null;
 
     function initProxy() {
+        var proxyVersion = "";
+
+        if (_dllProxyBasePath.indexOf('v9') >= 0) {
+            proxyVersion = "v9";
+            _apiVersion = "v9.0";
+        }
+        else if (_dllProxyBasePath.indexOf('v365') >= 0) {
+            proxyVersion = "v365";
+            _apiVersion = "v8.2";
+        }
+        else if (_dllProxyBasePath.indexOf('v2016') >= 0) {
+            proxyVersion = "v2016";
+            _apiVersion = "v8.0";
+        }
+        else if (_dllProxyBasePath.indexOf('v2015') >= 0) {
+            proxyVersion = "v2015";
+            _apiVersion = "v7.0";
+        }
+        else if (_dllProxyBasePath.indexOf('v2013') >= 0) {
+            proxyVersion = "v2013";
+            _apiVersion = "v6.0";
+        }
+        else {
+            throw "Couldn't determine which proxy version to use based on the proxy package name";
+        }
+
         translateMethod = edge.func({
-            assemblyFile: dllProxyBasePath + '/FakeXrmEasy.EdgeProxy' + _proxyVersion + '.dll',
-            typeName: 'EdgeProxy.Proxy',
+            assemblyFile: _dllProxyBasePath + '/FakeXrmEasy.EdgeProxy.' + proxyVersion + '.dll',
+            typeName: 'FakeXrmEasy.EdgeProxy.Proxy',
             methodName: 'TranslateODataQueryToQueryExpression' // This must be Func<object,Task<object>>
         });
     }
 
     function processXhr(fakeXhr) {
         //Only process requests which belong to the CRM URL
-        if (fakeXhr.url.indexOf(xrm.Page.context.getClientUrl()) < 0) {
+        if (fakeXhr.url.indexOf(_fakeCrmUrl) < 0) {
             return;
         }
         
         //Get relative url
-        fakeXhr.relativeApiUrl = fakeXhr.url.replace(xrm.Page.context.getClientUrl(), "");
+        fakeXhr.relativeApiUrl = fakeXhr.url.replace(_fakeCrmUrl, "");
         
         //Check api v8
-        if (fakeXhr.relativeApiUrl.indexOf("/api/data/" + apiVersion) < 0) {
-            throw 'Only Web API Requests are supported (' + apiVersion + ')';
+        if (fakeXhr.relativeApiUrl.indexOf("/api/data/" + _apiVersion) < 0) {
+            throw 'Only Web API Requests are supported (' + _apiVersion + ')';
         }
         
         //get url part after version
-        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/" + apiVersion + "/", "");
+        fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/" + _apiVersion + "/", "");
 
         //Undo substring and parse body
         if (fakeXhr.requestHeaders["Content-Type"] &&
@@ -94,10 +130,24 @@ var Guid = require('guid');
 
     }
 
+    function GetInverseSetName(pluralEntitySetName) {
+
+        var ending3 = pluralEntitySetName.slice(-3);
+        var ending2 = pluralEntitySetName.slice(-2);
+        var ending = pluralEntitySetName.slice(-1);
+
+        if (ending3 == "ies")
+            return pluralEntitySetName.substring(0, pluralEntitySetName.length - 3) + "y";
+
+        if (ending2 == "es")
+            return pluralEntitySetName.substring(0, pluralEntitySetName.length - 2) + "s";
+
+        return pluralEntitySetName.substring(0, pluralEntitySetName.length - 1); //remove last "s" in any other case
+    }
     function translateODataToQueryExpression(entityname, parsedQuery) {
         var qe = {};
 
-        qe.EntityName = entityname;
+        qe.EntityName = GetInverseSetName(entityname);
         if (parsedQuery['$select']) {
             qe.ColumnSet = translateODataToQueryExpression_select(entityname, parsedQuery['$select']);
         }
@@ -164,7 +214,7 @@ var Guid = require('guid');
         fakeXhr.readyState = 4; //Completed
 
         //Headers
-        var entityIdUrl = xrm.Page.context.getClientUrl() + '/api/data/' + apiVersion + '/' + entityName + '(' + jsonData.id + ')'; 
+        var entityIdUrl = _fakeCrmUrl + '/api/data/' + _apiVersion + '/' + entityName + '(' + jsonData.id + ')'; 
         fakeXhr.setResponseHeader("OData-EntityId", entityIdUrl);
 
         //Force callback
@@ -197,6 +247,10 @@ var Guid = require('guid');
             Context: getContextForEdge()
         };
         translateMethod(executionContext, function (error, result) {
+            if (error) {
+                throw JSON.stringify(error);
+            }
+
             if (result.Entities) {
 
                 //Found
@@ -280,14 +334,13 @@ var Guid = require('guid');
     exports.Xrm = xrm;
     exports.data = _data;
     exports.setApiVersion = function (version) {
-        apiVersion = version;
+        _apiVersion = version;
     }
-    exports.setProxyPath = function (path, proxyVersion) {
-        _proxyVersion = proxyVersion;
-        dllProxyBasePath = path;
+    exports.setProxyPath = function (path) {
+        _dllProxyBasePath = path;
         initProxy();
     };
-    exports.initialize = function (entityname, entities) {
+    exports.initialize = function (entities) {
         initProxy();
 
         if (!entities.length) {
@@ -308,12 +361,18 @@ var Guid = require('guid');
                 throw new "Entity" + i.toString() + " must have a valid id property (Guid expected)";
             }
 
+            if (!e.logicalName) {
+                throw new "Entity" + i.toString() + " must have a valid logicalName attribute";
+            }
+
             e.id = e.id.toString();
 
-            if (!_data[entityname])
-                _data[entityname] = [];
+            var entityName = e.logicalName.toLowerCase();
 
-            _data[entityname][e.id.toString()] = e;
+            if (!_data[entityName])
+                _data[entityName] = [];
+
+            _data[entityName][e.id.toString()] = e;
         }
     };
 
