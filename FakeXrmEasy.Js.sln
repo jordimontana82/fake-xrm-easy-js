@@ -11,8 +11,6 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "FakeXrmEasy.Js.2015", "Fake
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebResources", "WebResources\WebResources.csproj", "{68670149-40FE-4EA9-A624-572B2C595F69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdgeProxy", "EdgeProxy\EdgeProxy.csproj", "{295593E8-C5FF-43FE-9A2F-B7F39D7CF61D}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5F94EA5E-7F26-4776-BCD9-311C79281756}"
 	ProjectSection(SolutionItems) = preProject
 		build.fsx = build.fsx
@@ -93,10 +91,6 @@ Global
 		{68670149-40FE-4EA9-A624-572B2C595F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68670149-40FE-4EA9-A624-572B2C595F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68670149-40FE-4EA9-A624-572B2C595F69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{295593E8-C5FF-43FE-9A2F-B7F39D7CF61D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{295593E8-C5FF-43FE-9A2F-B7F39D7CF61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{295593E8-C5FF-43FE-9A2F-B7F39D7CF61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{295593E8-C5FF-43FE-9A2F-B7F39D7CF61D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{15BAA3DF-064F-42DF-A190-99E8204080E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{15BAA3DF-064F-42DF-A190-99E8204080E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15BAA3DF-064F-42DF-A190-99E8204080E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
