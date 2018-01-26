@@ -273,7 +273,12 @@ var Guid = require('guid');
                 fakeXhr.response = JSON.stringify(response);
                 fakeXhr.readyState = 4; //Completed
 
-                //Force callback
+                //Force onload
+                if (fakeXhr.onload) {
+                    fakeXhr.onload();
+                    return;
+                }
+
                 if (fakeXhr.onreadystatechange)
                     fakeXhr.onreadystatechange();
             }

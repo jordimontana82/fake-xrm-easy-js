@@ -354,11 +354,15 @@ namespace FakeXrmEasy.EdgeProxy
             }
 
             //Non-basic type
-            var expando = value as Dictionary<string, object>;
-            if(expando.ContainsKey("Id") && expando.ContainsKey("LogicalName"))
+            var expando = value as System.Dynamic.ExpandoObject;
+            if(expando.IsEntityReference())
             {
                 //Entity Reference
-                return null;
+                return new EntityReference()
+                {
+                    Id = new Guid(expando.GetKeyValue("id").ToString()),
+                    LogicalName = expando.GetKeyValue("logicalName") as string
+                };
             }
 
             return null;

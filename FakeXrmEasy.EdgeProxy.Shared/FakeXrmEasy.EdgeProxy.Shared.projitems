@@ -9,6 +9,7 @@
     <Import_RootNamespace>FakeXrmEasy.EdgeProxy</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ExpandoObjectExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Proxy.cs" />
   </ItemGroup>

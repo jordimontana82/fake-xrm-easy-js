@@ -20,6 +20,5 @@ namespace FakeXrmEasy.EdgeProxy
 
             return dyn.GetProperty(name) != null;
         }
-
     }
 }
