@@ -271,6 +271,7 @@ var Guid = require('guid');
 
                 fakeXhr.status = 200;
                 fakeXhr.response = JSON.stringify(response);
+                fakeXhr.responseText = fakeXhr.response;
                 fakeXhr.readyState = 4; //Completed
 
                 //Force onload
