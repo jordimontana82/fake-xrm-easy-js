@@ -217,6 +217,12 @@ var Guid = require('guid');
         var entityIdUrl = _fakeCrmUrl + '/api/data/' + _apiVersion + '/' + entityName + '(' + jsonData.id + ')'; 
         fakeXhr.setResponseHeader("OData-EntityId", entityIdUrl);
 
+        //Force onload
+        if (fakeXhr.onload) {
+            fakeXhr.onload();
+            return;
+        }
+
         //Force callback
         if (fakeXhr.onreadystatechange)
             fakeXhr.onreadystatechange();
