@@ -11,16 +11,14 @@ describe("Web API", function () {
         context = new XrmFakedContext("v9.0",fakeUrl, true);
     });
 
-    it("$select: it should retrieve fields specified in $select clause", function () {
+    /*
+    test("$select: it should retrieve fields specified in $select clause", done => {
         context.initialize([
             new Entity("account", Guid.create(), {name: 'Company 1', revenue: 3000, other: "somevalue"}),
             new Entity("account", Guid.create(), {name: 'Company 2', revenue: 100001, other: "someothervalue"})
         ]);
 
-        var bWasCalled = false;
-
         WebApiClient.retrieveMultiple("accounts?$select=name,revenue", function (data) {
-            bWasCalled = true;
             expect(data.value.length).toBe(2); //2 records
             expect(data.value[0].name).toBe("Company 1");
             expect(data.value[1].name).toBe("Company 2");
@@ -29,10 +27,13 @@ describe("Web API", function () {
             expect(data.value[0].other).toBe(undefined);
             expect(data.value[1].other).toBe(undefined);
             expect(data.value.length).toBe(2);
+            done();
         });
 
     });
+*/
 
+    /*
     it("$select: it should return all columns when there is no $select", function () {
 
         xrmFakedContext.initialize("accounts", [
@@ -329,5 +330,6 @@ describe("Web API", function () {
 
         assert.isTrue(bWasCalled);
     });
+    */
 });
 
