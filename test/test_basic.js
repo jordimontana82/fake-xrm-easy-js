@@ -1,5 +1,9 @@
-﻿var accountForm = require('../webresources/new_basic.js/index.js' );
+﻿
+var accountForm = require('../webresources/js/new_basic.js' );
 
-it("Should find & call onLoad", function () {
-    accountForm.onLoad();
+describe("Basic tests", () => {
+    it("Should find & call onLoad", function () {
+        accountForm.onLoad();
+    });
 });
+
