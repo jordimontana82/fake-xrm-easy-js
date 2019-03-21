@@ -1,0 +1,40 @@
+{
+    "name": "fakexrmeasy",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/xrmFakedContext.js",
+    "author": "@jordimontana",
+    "dependencies": {
+      "chai": "^3.5.0",
+      "dateformat": "^1.0.12",
+      "guid": "0.0.12",
+      "odata-parser": "^1.4.1",
+      "sinon": "^1.17.4",
+      "xmlhttprequest": "^1.8.0"
+    },
+    "devDependencies": {},
+    "scripts": {
+      "test": "istanbul cover ./node_modules/mocha/bin/_mocha"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/jordimontana82/fake-xrm-easy-js.git"
+    },
+    "keywords": [
+      "dynamics",
+      "dynamics 365",
+      "crm",
+      "test",
+      "unit",
+      "testing",
+      "fake",
+      "mock",
+      "xrm"
+    ],
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/jordimontana82/fake-xrm-easy-js/issues"
+    },
+    "homepage": "http://dynamicsvalue.com"
+  }
+  
