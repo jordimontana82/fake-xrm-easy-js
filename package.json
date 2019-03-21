@@ -1,40 +1,71 @@
 {
-    "name": "fakexrmeasy",
-    "version": "1.0.0",
-    "description": "",
-    "main": "src/xrmFakedContext.js",
-    "author": "@jordimontana",
-    "dependencies": {
-      "chai": "^3.5.0",
-      "dateformat": "^1.0.12",
-      "guid": "0.0.12",
-      "odata-parser": "^1.4.1",
-      "sinon": "^1.17.4",
-      "xmlhttprequest": "^1.8.0"
-    },
-    "devDependencies": {},
-    "scripts": {
-      "test": "istanbul cover ./node_modules/mocha/bin/_mocha"
-    },
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/jordimontana82/fake-xrm-easy-js.git"
-    },
-    "keywords": [
-      "dynamics",
-      "dynamics 365",
-      "crm",
-      "test",
-      "unit",
-      "testing",
-      "fake",
-      "mock",
-      "xrm"
+  "name": "fakexrmeasy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/xrmFakedContext.js",
+  "author": "@jordimontana",
+  "directories": {
+    "src": "src",
+    "test": "test"
+  },
+  "dependencies": {
+    "xmlhttprequest": "1.8.0",
+    "odata-parser": "1.4.1",
+    "guid": "0.0.12",
+    "linq": "3.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "8.10.12",
+    "@types/sinon": "^5.0.1",
+    "@types/xrm": "8.2.10",
+    "@types/jquery": "3.3.29",
+    "jest": "^22.4.4",
+    "sinon": "^5.1.1",
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3",
+    "linq": "3.1.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordimontana82/fake-xrm-easy-js.git"
+  },
+  "keywords": [
+    "dynamics",
+    "dynamics 365",
+    "crm",
+    "test",
+    "unit",
+    "testing",
+    "fake",
+    "mock",
+    "xrm"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jordimontana82/fake-xrm-easy-js/issues"
+  },
+  "homepage": "http://dynamicsvalue.com",
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "node"
     ],
-    "license": "MIT",
-    "bugs": {
-      "url": "https://github.com/jordimontana82/fake-xrm-easy-js/issues"
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
-    "homepage": "http://dynamicsvalue.com"
+    "testURL": "http://localhost/",
+    "testMatch": [
+      "**/test/**/*.+(ts|js)"
+    ],
+    "setupFiles": [
+      "./setup/setup-jest.js"
+    ]
   }
-  
+}
