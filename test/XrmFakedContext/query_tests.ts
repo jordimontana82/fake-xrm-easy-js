@@ -272,48 +272,38 @@ describe("XrmFakedContext Queries: $filter", function () {
 
     });
 
-    /*
-    it("$filter: and test", function () {
-
-        xrmFakedContext.initialize("accounts", [
-            { id: Guid.create(), name: 'Company 1', revenue: 3000 },
-            { id: Guid.create(), name: 'Company 2', revenue: 4567 },
-            { id: Guid.create(), name: 'Company 3', revenue: 100001 }
+    test("$filter: and test", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'A Company', revenue: 4567, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 1', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 1', revenue: 100001, other: "someothervalue"})
         ]);
 
-        var bWasCalled = false;
-
-        WebApiClient.retrieveMultiple("accounts?$filter=revenue le 4567 and name eq 'Company 1'", function (data) {
-            bWasCalled = true;
-
-            assert.equal(data.value.length, 1);
-            assert.equal(data.value[0].name, "Company 1");
+        WebApiClient.retrieveMultiple("accounts?$filter=revenue eq 4567 and name eq 'Company 1'", function (data) {
+            expect(data.value.length).toBe(1);
+            expect(data.value[0].name).toBe("Company 1");
+            expect(data.value[0].revenue).toBe(4567);
+            done();
         });
 
-        assert.isTrue(bWasCalled);
     });
 
-    it("$filter: or test", function () {
-
-        xrmFakedContext.initialize("accounts", [
-            { id: Guid.create(), name: 'Company 1', revenue: 3000 },
-            { id: Guid.create(), name: 'Company 2', revenue: 4567 },
-            { id: Guid.create(), name: 'Company 3', revenue: 100001 }
+    test("$filter: or test", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'Company 1', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 2', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 3', revenue: 100001, other: "someothervalue"})
         ]);
-
-        var bWasCalled = false;
 
         WebApiClient.retrieveMultiple("accounts?$filter=revenue eq 4567 or revenue eq 100001", function (data) {
-            bWasCalled = true;
-
-            assert.equal(data.value.length, 2);
-            assert.equal(data.value[0].name, "Company 2");
-            assert.equal(data.value[1].name, "Company 3");
+            expect(data.value.length).toBe(2);
+            expect(data.value[0].name).toBe( "Company 2");
+            expect(data.value[1].name).toBe( "Company 3");
+            done();
         });
-
-        assert.isTrue(bWasCalled);
     });
 
+    /*
     it("$top: it should retrieve the top X first results", function () {
 
         xrmFakedContext.initialize("accounts", [

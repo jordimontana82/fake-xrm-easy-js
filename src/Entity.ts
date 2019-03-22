@@ -58,11 +58,16 @@ export default class Entity implements IEntity
                 return this.satisfiesFilterLt(filter) || this.satisfiesFilterEq(filter);
             case "functioncall":
                 return this.satisfiesFilterFunctionCall(filter);
+            case "and":
+                return this.satisfiesFilter(filter.left) && this.satisfiesFilter(filter.right);
+            case "or":
+                return this.satisfiesFilter(filter.left) || this.satisfiesFilter(filter.right);
         }
 
         return false;
     }
 
+    
     protected satisfiesFilterFunctionCall(filter: any): boolean {
         switch(filter.func) 
         {
