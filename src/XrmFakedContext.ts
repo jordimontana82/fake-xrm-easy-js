@@ -226,17 +226,23 @@ export default class XrmFakedContext implements IXrmFakedContext
 
         var columnSet = parsedQuery.queryParams ? parsedQuery.queryParams['$select'] : null;
         var filter = parsedQuery.queryParams ? parsedQuery.queryParams['$filter'] : null;
+        var topCount = parsedQuery.queryParams ? parsedQuery.queryParams['$top'] : null;
 
-        var queryResult = Enumerable.from(records)
+        var queryeable = Enumerable.from(records)
             .where((e, index) => { return e.satisfiesFilter(filter); })
-            .select((e, index) => { return e.projectAttributes(columnSet); })
-            .toArray();
+            .select((e, index) => { return e.projectAttributes(columnSet); });
+            
         
+        if(topCount) {
+            queryeable = queryeable.take(topCount);
+        }
+        
+        var arrayResult = queryeable.toArray();
 
         var result: Array<IEntity> = [];
-        for(var i=0; i < queryResult.length; i++) {
+        for(var i=0; i < arrayResult.length; i++) {
 
-            result.push(queryResult[i]);
+            result.push(arrayResult[i]);
         }
 
         return result;

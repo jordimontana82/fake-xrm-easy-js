@@ -303,32 +303,24 @@ describe("XrmFakedContext Queries: $filter", function () {
         });
     });
 
-    /*
-    it("$top: it should retrieve the top X first results", function () {
-
-        xrmFakedContext.initialize("accounts", [
-            { id: Guid.create(), name: 'Company 1', revenue: 3000 },
-            { id: Guid.create(), name: 'Company 2', revenue: 100001 },
-            { id: Guid.create(), name: 'Company 3', revenue: 100001 },
-            { id: Guid.create(), name: 'Company 4', revenue: 100001 },
-            { id: Guid.create(), name: 'Company 5', revenue: 100001 },
-            { id: Guid.create(), name: 'Company 6', revenue: 100001 }
+    test("$top: it should retrieve the top X first results", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'Company 1', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 2', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 3', revenue: 100001, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 4', revenue: 100001, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 5', revenue: 100001, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 6', revenue: 100001, other: "someothervalue"})
         ]);
 
-
-        var bWasCalled = false;
-
         WebApiClient.retrieveMultiple("accounts?$select=name&$top=3", function (data) {
-            bWasCalled = true;
-
-            assert.equal(data.value.length, 3);
-            assert.equal(data.value[0].name, "Company 1");
-            assert.equal(data.value[1].name, "Company 2");
-            assert.equal(data.value[2].name, "Company 3");
+            expect(data.value.length).toBe(3);
+            expect(data.value[0].name).toBe( "Company 1");
+            expect(data.value[1].name).toBe( "Company 2");
+            expect(data.value[2].name).toBe( "Company 3");
+            done();
         });
-
-        assert.isTrue(bWasCalled);
     });
-    */
+    
 });
 
