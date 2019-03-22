@@ -8,4 +8,5 @@ export default interface IEntity {
     clone(): IEntity;
     toXrmEntity(): any;
     projectAttributes(columnSet: Array<string>): IEntity;
+    satisfiesFilter(filter: any): boolean;
 }

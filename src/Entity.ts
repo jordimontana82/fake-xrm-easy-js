@@ -38,4 +38,40 @@ export default class Entity implements IEntity
         }
         return cloned;
     }
+
+    satisfiesFilter(filter: any): boolean {
+        if(!filter)
+            return true;
+
+        switch(filter.type) {
+            case "eq":
+                return this.satisfiesFilterEq(filter);
+            case "ne":
+                return this.satisfiesFilterNe(filter);
+        }
+        
+        return false;
+    }
+
+    protected satisfiesFilterEq(filter: any): boolean {
+        var property = this.getFilterProperty(filter);
+        var literal = this.getFilterLiteral(filter);
+
+        return this.attributes[property.name] === literal.value;
+    }
+
+    protected satisfiesFilterNe(filter: any): boolean {
+        var property = this.getFilterProperty(filter);
+        var literal = this.getFilterLiteral(filter);
+
+        return this.attributes[property.name] !== literal.value;
+    }
+
+    protected getFilterProperty(filter: any): any {
+        return filter.left.type === "property" ? filter.left : filter.right;
+    }
+
+    protected getFilterLiteral(filter: any): any {
+        return filter.left.type === "literal" ? filter.left : filter.right;
+    }
 }
