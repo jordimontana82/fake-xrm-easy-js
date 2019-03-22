@@ -48,6 +48,15 @@ export default class Entity implements IEntity
                 return this.satisfiesFilterEq(filter);
             case "ne":
                 return this.satisfiesFilterNe(filter);
+            case "gt":
+                return this.satisfiesFilterGt(filter);
+            case "lt":
+                return this.satisfiesFilterLt(filter);
+            case "ge":
+                return this.satisfiesFilterGt(filter) || this.satisfiesFilterEq(filter);
+            case "le":
+                return this.satisfiesFilterLt(filter) || this.satisfiesFilterEq(filter);
+
         }
         
         return false;
@@ -60,11 +69,22 @@ export default class Entity implements IEntity
         return this.attributes[property.name] === literal.value;
     }
 
-    protected satisfiesFilterNe(filter: any): boolean {
+    protected satisfiesFilterGt(filter: any): boolean {
         var property = this.getFilterProperty(filter);
         var literal = this.getFilterLiteral(filter);
 
-        return this.attributes[property.name] !== literal.value;
+        return this.attributes[property.name] > literal.value;
+    }
+
+    protected satisfiesFilterLt(filter: any): boolean {
+        var property = this.getFilterProperty(filter);
+        var literal = this.getFilterLiteral(filter);
+
+        return this.attributes[property.name] < literal.value;
+    }
+
+    protected satisfiesFilterNe(filter: any): boolean {
+        return !this.satisfiesFilterEq(filter);
     }
 
     protected getFilterProperty(filter: any): any {
