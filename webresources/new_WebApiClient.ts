@@ -94,7 +94,7 @@
                 }
             }
         };
-        req.send({});
+        req.send(null);
     }
     
     exports.get = getRecords;
