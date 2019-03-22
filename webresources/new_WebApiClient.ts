@@ -55,7 +55,7 @@
                                 .replace("(", "")
                                 .replace(")", "");
 
-                            successCallback(guid);
+                            successCallback(guid, xhr);
                         }
                         
                     }

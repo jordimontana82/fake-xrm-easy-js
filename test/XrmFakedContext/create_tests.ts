@@ -20,10 +20,21 @@ describe("XrmFakedContext: Create", function () {
                 "description": "This is the description of the sample account",
                 "revenue": 5000000,
                 "accountcategorycode": 1
-            }, function success(guid) {
-                //entityid was returned
-                var accountName = context.getAllData().get("account").get(guid).attributes["name"];
-                expect(accountName).toBe("Sample Account");
+            }, function success(guid, xhr) {
+                //an account was created with the same fields
+                var accountCreated = context.getAllData().get("account").get(guid);
+
+                expect(accountCreated.attributes["name"]).toBe("Sample Account");
+                expect(accountCreated.attributes["creditonhold"]).toBe(false);
+                expect(accountCreated.attributes["address1_latitude"]).toBe(47.639583);
+                expect(accountCreated.attributes["description"]).toBe("This is the description of the sample account");
+                expect(accountCreated.attributes["revenue"]).toBe(5000000);
+                expect(accountCreated.attributes["accountcategorycode"]).toBe(1);
+
+                //verify xhr response
+                expect(xhr.status).toBe(204);
+                expect(xhr.getResponseHeader("OData-EntityId")).not.toBeNull();
+
                 done();
         });
     });
