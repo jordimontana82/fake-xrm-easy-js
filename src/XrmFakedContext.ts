@@ -1,5 +1,6 @@
 ﻿
 var Guid = require('guid');
+import * as Enumerable from 'linq';
 
 import IXrmFakedContext from './IXrmFakedContext';
 import IFakeXmlHttpRequest from './IFakeXmlHttpRequest';
@@ -164,8 +165,39 @@ export default class XrmFakedContext implements IXrmFakedContext
 
     protected executeGetRequest(fakeXhr: IFakeXmlHttpRequest): void {
         var parsedOData = this._oDataUrlParser.parse(fakeXhr.relativeUrl);
+        var entityName = this.getSingularSetName(parsedOData.entitySetName);
 
+        //query entities
+        var queryResult = this.executeQuery(entityName, parsedOData);
+
+        //Return a list of entities
+        var response: any = {};
+        response["@odata.context"] = "";
+
+        var entities = [];
+        for (var i = 0; i < queryResult.length; i++) {
+            var odataEntity = queryResult[i].toXrmEntity();
+            odataEntity["@odata.etag"] = "W/\"" + i.toString() + "\"";
+            entities.push(odataEntity);
+        }
+
+        response.value = entities;
+
+        fakeXhr.status = 200;
+        fakeXhr.response = JSON.stringify(response);
+        fakeXhr.responseText = JSON.stringify(response);
+        fakeXhr.readyState = 4; //Completed
+
+        //Force onload
+        if (fakeXhr.onload) {
+            fakeXhr.onload();
+            return;
+        }
+
+        if (fakeXhr.onreadystatechange)
+            fakeXhr.onreadystatechange();
     }
+    
     protected getSingularSetName(pluralEntitySetName: string): string {
         var ending3 = pluralEntitySetName.slice(-3);
         var ending2 = pluralEntitySetName.slice(-2);
@@ -179,11 +211,33 @@ export default class XrmFakedContext implements IXrmFakedContext
 
         return pluralEntitySetName.substring(0, pluralEntitySetName.length - 1); //remove last "s" in any other case
     }
-    protected executeQuery(parsedODataQuery: ODataParsedUrl): void {
-        var entityName = this.getSingularSetName(parsedODataQuery.entitySetName);
+    protected executeQuery(entityName: string, parsedQuery: ODataParsedUrl): Array<IEntity> {
+        if(!this._data.containsKey(entityName))
+            return [];
 
+        var entityDictionary = this._data.get(entityName);
+        var records = entityDictionary.values();
+
+        //from
+        //join / expands
+        //where clause
+        //projection
+        //orderby
+
+        var columnSet = parsedQuery.queryParams['$select'];
+        var queryResult = Enumerable.from(records)
+            .select((e, index) => { return e.projectAttributes(columnSet); })
+            .toArray();
+        
+
+        var result: Array<IEntity> = [];
+        for(var i=0; i < queryResult.length; i++) {
+
+            result.push(queryResult[i]);
+        }
+
+        return result;
     }
-
 }
 
 
@@ -266,42 +320,6 @@ export default class XrmFakedContext implements IXrmFakedContext
         return jsEntity;
     }
 
-    //Process query depending on method
-    function processXhrPost(fakeXhr) {
-        var entityName = fakeXhr.relativeUrl;
-        var jsonData = JSON.parse(fakeXhr.requestBody);
-
-        
-        //Create a new record of the specified entity in the context
-        jsonData.id = Guid.create().toString();
-
-        if (!_data[entityName]) {
-            _data[entityName] = [];
-        }
-
-        _data[entityName][jsonData.id] = jsonData;
-
-        //Compose fake response
-        var response = {};
-
-        fakeXhr.status = 204;
-        fakeXhr.response = JSON.stringify({});
-        fakeXhr.readyState = 4; //Completed
-
-        //Headers
-        var entityIdUrl = _fakeCrmUrl + '/api/data/' + _apiVersion + '/' + entityName + '(' + jsonData.id + ')'; 
-        fakeXhr.setResponseHeader("OData-EntityId", entityIdUrl);
-
-        //Force onload
-        if (fakeXhr.onload) {
-            fakeXhr.onload();
-            return;
-        }
-
-        //Force callback
-        if (fakeXhr.onreadystatechange)
-            fakeXhr.onreadystatechange();
-    }
 
     function processXhrGet(fakeXhr) {
 

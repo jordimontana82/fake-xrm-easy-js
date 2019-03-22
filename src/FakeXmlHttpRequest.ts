@@ -7,6 +7,7 @@ export default class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     requestBody: any;
     requestHeaders: [];
     response: any;
+    responseText: string;
     responseXML: any;
     responseHeaders: [];
     readyState: number;

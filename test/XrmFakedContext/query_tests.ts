@@ -5,17 +5,36 @@ var Guid = require('guid');
 var WebApiClient = require('../../webresources/new_WebApiClient.ts');
 var fakeUrl: string = 'http://fakeUrl';
 
-describe("XrmFakedContext: Queries", function () {
-    let context: XrmFakedContext = null;
-    beforeEach(() => {
-        context = new XrmFakedContext("v9.0",fakeUrl, true);
+let context: XrmFakedContext = null;
+beforeEach(() => {
+    context = new XrmFakedContext("v9.0",fakeUrl, true);
+});
+
+describe("XrmFakedContext Queries: $select", function () {
+
+    test("it should return an empty data set if the context is empty", done => {
+
+        WebApiClient.retrieveMultiple("accounts?$select=name,revenue", function (data) {
+            expect(data.value.length).toBe(0); //2 records
+            done();
+        });
+
     });
 
-    test("blank", () => {
+    test("it should return an empty data set if there are no records for the entity requested", done => {
+        context.initialize([
+            new Entity("contact", Guid.create(), {firstname: 'Contact 1'}),
+            new Entity("contact", Guid.create(), {firstname: 'Contact 2'})
+        ]);
+
+        WebApiClient.retrieveMultiple("accounts?$select=name,revenue", function (data) {
+            expect(data.value.length).toBe(0);
+            done();
+        });
 
     });
-    /*
-    test("$select: it should retrieve fields specified in $select clause", done => {
+
+    test("it should retrieve fields specified in $select clause only", done => {
         context.initialize([
             new Entity("account", Guid.create(), {name: 'Company 1', revenue: 3000, other: "somevalue"}),
             new Entity("account", Guid.create(), {name: 'Company 2', revenue: 100001, other: "someothervalue"})
@@ -34,7 +53,7 @@ describe("XrmFakedContext: Queries", function () {
         });
 
     });
-*/
+
 
     /*
     it("$select: it should return all columns when there is no $select", function () {

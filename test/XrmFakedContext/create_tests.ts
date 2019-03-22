@@ -21,7 +21,8 @@ describe("XrmFakedContext: Create", function () {
                 "revenue": 5000000,
                 "accountcategorycode": 1
             }, function success(guid, xhr) {
-                //an account was created with the same fields
+
+                //verify an account was created with the exact same fields
                 var accountCreated = context.getAllData().get("account").get(guid);
 
                 expect(accountCreated.attributes["name"]).toBe("Sample Account");

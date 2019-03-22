@@ -6,6 +6,7 @@ export default interface IFakeXmlHttpRequest {
     requestBody: any;
     requestHeaders: [];
     response: any;
+    responseText: string;
     responseXML: any;
     responseHeaders: [];
     readyState: number;
