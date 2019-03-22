@@ -1,6 +1,6 @@
 import XrmFakedContext from '../../src/XrmFakedContext';
 import Entity from '../../src/Entity';
-import { doesNotThrow } from 'assert';
+
 var Guid = require('guid');
 
 var WebApiClient = require('../../webresources/new_WebApiClient.ts');
