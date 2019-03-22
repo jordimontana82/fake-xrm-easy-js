@@ -193,28 +193,51 @@ describe("XrmFakedContext Queries: $filter", function () {
         });
     });
 
-    /*
-    it("$filter: startsWith test", function () {
-
-        xrmFakedContext.initialize("accounts", [
-            { id: Guid.create(), name: 'A Company', revenue: 3000 },
-            { id: Guid.create(), name: 'Another Company', revenue: 4567 },
-            { id: Guid.create(), name: 'Company 3', revenue: 100001 }
+    
+    test("$filter: startsWith test", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'A Company', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Another Company', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 3', revenue: 100001, other: "someothervalue"})
         ]);
 
-        var bWasCalled = false;
-
         WebApiClient.retrieveMultiple("accounts?$filter=startswith(name,'a')", function (data) {
-            bWasCalled = true;
-
-            assert.equal(data.value.length, 2);
-            assert.equal(data.value[0].name, "A Company");
-            assert.equal(data.value[1].name, "Another Company");
+            expect(data.value.length).toBe(2);
+            expect(data.value[0].name).toBe( "A Company");
+            expect(data.value[1].name).toBe( "Another Company");
+            done();
         });
-
-        assert.isTrue(bWasCalled);
     });
 
+    test("$filter: startsWith upperCase test", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'A Company', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Another Company', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 3', revenue: 100001, other: "someothervalue"})
+        ]);
+
+        WebApiClient.retrieveMultiple("accounts?$filter=startswith(name,'A')", function (data) {
+            expect(data.value.length).toBe(2);
+            expect(data.value[0].name).toBe( "A Company");
+            expect(data.value[1].name).toBe( "Another Company");
+            done();
+        });
+    });
+
+    test("$filter: startsWith should return empty collection if there was no match", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'A Company', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Another Company', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 3', revenue: 100001, other: "someothervalue"})
+        ]);
+
+        WebApiClient.retrieveMultiple("accounts?$filter=startswith(name,'AnT')", function (data) {
+            expect(data.value.length).toBe(0);
+            done();
+        });
+    });
+
+    /*
     it("$filter: endsWith test", function () {
 
         xrmFakedContext.initialize("accounts", [

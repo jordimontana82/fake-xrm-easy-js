@@ -56,10 +56,34 @@ export default class Entity implements IEntity
                 return this.satisfiesFilterGt(filter) || this.satisfiesFilterEq(filter);
             case "le":
                 return this.satisfiesFilterLt(filter) || this.satisfiesFilterEq(filter);
-
+            case "functioncall":
+                return this.satisfiesFilterFunctionCall(filter);
         }
-        
+
         return false;
+    }
+
+    protected satisfiesFilterFunctionCall(filter: any): boolean {
+        switch(filter.func) 
+        {
+            case "startswith":
+                return this.satisfiesFilterFunctionCallStartsWith(filter);
+        }
+
+        return false;
+    }
+    protected satisfiesFilterFunctionCallStartsWith(filter: any): boolean {
+        var property = this.getFilterPropertyFromArgs(filter);
+        var literal = this.getFilterLiteralFromArgs(filter);
+        
+        var propertyValue = this.attributes[property.name];
+        if(propertyValue) {
+            return propertyValue.toLowerCase().indexOf(literal.value.toLowerCase()) == 0;
+        }
+        else {
+            return false;
+        }
+
     }
 
     protected satisfiesFilterEq(filter: any): boolean {
@@ -93,5 +117,21 @@ export default class Entity implements IEntity
 
     protected getFilterLiteral(filter: any): any {
         return filter.left.type === "literal" ? filter.left : filter.right;
+    }
+
+    protected getFilterPropertyFromArgs(filter: any): any {
+        for(var i=0; i < filter.args.length; i++) {
+            if(filter.args[i].type === "property")
+                return filter.args[i];
+        }
+        return null;
+    }
+
+    protected getFilterLiteralFromArgs(filter: any): any {
+        for(var i=0; i < filter.args.length; i++) {
+            if(filter.args[i].type === "literal")
+                return filter.args[i];
+        }
+        return null;
     }
 }
