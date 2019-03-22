@@ -66,6 +66,10 @@
     ],
     "setupFiles": [
       "./setup/setup-jest.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".d.ts"
     ]
   }
 }

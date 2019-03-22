@@ -2,7 +2,7 @@ import XrmFakedContext from '../../src/XrmFakedContext';
 import Entity from '../../src/Entity';
 var Guid = require('guid');
 
-var WebApiClient = require('../../webresources/js/new_WebApiClient.js');
+var WebApiClient = require('../../webresources/new_WebApiClient.ts');
 var fakeUrl: string = 'http://fakeUrl';
 
 describe("XrmFakedContext: Initialize", function () {
