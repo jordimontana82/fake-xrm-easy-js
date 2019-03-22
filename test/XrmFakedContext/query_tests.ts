@@ -1,5 +1,6 @@
 import XrmFakedContext from '../../src/XrmFakedContext';
 import Entity from '../../src/Entity';
+import { doesNotThrow } from 'assert';
 var Guid = require('guid');
 
 var WebApiClient = require('../../webresources/new_WebApiClient.ts');
@@ -237,51 +238,41 @@ describe("XrmFakedContext Queries: $filter", function () {
         });
     });
 
-    /*
-    it("$filter: endsWith test", function () {
-
-        xrmFakedContext.initialize("accounts", [
-            { id: Guid.create(), name: 'A Company', revenue: 3000 },
-            { id: Guid.create(), name: 'Another Company', revenue: 4567 },
-            { id: Guid.create(), name: 'Company 3', revenue: 100001 }
+    
+    test("$filter: endsWith test", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'A Company', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Another Company', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Company 3', revenue: 100001, other: "someothervalue"})
         ]);
 
-        var bWasCalled = false;
-
-        WebApiClient.retrieveMultiple("accounts?$filter=endswith(name,'Company')", function (data) {
-            bWasCalled = true;
-
-            assert.equal(data.value.length, 2);
-            assert.equal(data.value[0].name, "A Company");
-            assert.equal(data.value[1].name, "Another Company");
+        WebApiClient.retrieveMultiple("accounts?$filter=endswith(name,'company')", function (data) {
+            expect(data.value.length).toBe(2);
+            expect(data.value[0].name).toBe( "A Company");
+            expect(data.value[1].name).toBe( "Another Company");
+            done();
         });
-
-        assert.isTrue(bWasCalled);
     });
 
-    it("$filter: substringof test", function () {
-
-        xrmFakedContext.initialize("accounts", [
-            { id: Guid.create(), name: 'A Company', revenue: 3000 },
-            { id: Guid.create(), name: 'Another Company', revenue: 4567 },
-            { id: Guid.create(), name: 'Company 3', revenue: 100001 },
-            { id: Guid.create(), name: 'Other', revenue: 3 }
+    test("$filter: substringof test", done => {
+        context.initialize([
+            new Entity("account", Guid.create(), {name: 'Company A', revenue: 3000, other: "somevalue"}),
+            new Entity("account", Guid.create(), {name: 'Another Company', revenue: 4567, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'This is a Company 3', revenue: 100001, other: "someothervalue"}),
+            new Entity("account", Guid.create(), {name: 'Other', revenue: 3, other: "someothervalue"})
         ]);
-
-        var bWasCalled = false;
 
         WebApiClient.retrieveMultiple("accounts?$filter=substringof('Company', name)", function (data) {
-            bWasCalled = true;
-
-            assert.equal(data.value.length, 3);
-            assert.equal(data.value[0].name, "A Company");
-            assert.equal(data.value[1].name, "Another Company");
-            assert.equal(data.value[2].name, "Company 3");
+            expect(data.value.length).toBe(3);
+            expect(data.value[0].name).toBe( "Company A");
+            expect(data.value[1].name).toBe( "Another Company");
+            expect(data.value[2].name).toBe( "This is a Company 3");
+            done();
         });
 
-        assert.isTrue(bWasCalled);
     });
 
+    /*
     it("$filter: and test", function () {
 
         xrmFakedContext.initialize("accounts", [

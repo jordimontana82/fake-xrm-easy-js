@@ -68,6 +68,11 @@ export default class Entity implements IEntity
         {
             case "startswith":
                 return this.satisfiesFilterFunctionCallStartsWith(filter);
+            case "endswith":
+                return this.satisfiesFilterFunctionCallEndsWith(filter);
+            case "substringof":
+                return this.satisfiesFilterFunctionCallSubstringOf(filter);
+
         }
 
         return false;
@@ -78,12 +83,37 @@ export default class Entity implements IEntity
         
         var propertyValue = this.attributes[property.name];
         if(propertyValue) {
-            return propertyValue.toLowerCase().indexOf(literal.value.toLowerCase()) == 0;
+            return propertyValue.toLowerCase().startsWith(literal.value.toLowerCase());
         }
         else {
             return false;
         }
+    }
 
+    protected satisfiesFilterFunctionCallEndsWith(filter: any): boolean {
+        var property = this.getFilterPropertyFromArgs(filter);
+        var literal = this.getFilterLiteralFromArgs(filter);
+        
+        var propertyValue = this.attributes[property.name];
+        if(propertyValue) {
+            return propertyValue.toLowerCase().endsWith(literal.value.toLowerCase());
+        }
+        else {
+            return false;
+        }
+    }
+
+    protected satisfiesFilterFunctionCallSubstringOf(filter: any): boolean {
+        var property = this.getFilterPropertyFromArgs(filter);
+        var literal = this.getFilterLiteralFromArgs(filter);
+        
+        var propertyValue = this.attributes[property.name];
+        if(propertyValue) {
+            return propertyValue.toLowerCase().includes(literal.value.toLowerCase());
+        }
+        else {
+            return false;
+        }
     }
 
     protected satisfiesFilterEq(filter: any): boolean {
