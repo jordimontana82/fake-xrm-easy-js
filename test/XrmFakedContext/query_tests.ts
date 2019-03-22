@@ -1,16 +1,19 @@
-﻿import XrmFakedContext from '../src/XrmFakedContext';
-import Entity from '../src/Entity';
+import XrmFakedContext from '../../src/XrmFakedContext';
+import Entity from '../../src/Entity';
 var Guid = require('guid');
 
-var WebApiClient = require('../webresources/js/new_WebApiClient.js');
+var WebApiClient = require('../../webresources/js/new_WebApiClient.js');
 var fakeUrl: string = 'http://fakeUrl';
 
-describe("Web API", function () {
+describe("XrmFakedContext: Queries", function () {
     let context: XrmFakedContext = null;
     beforeEach(() => {
         context = new XrmFakedContext("v9.0",fakeUrl, true);
     });
 
+    test("blank", () => {
+
+    });
     /*
     test("$select: it should retrieve fields specified in $select clause", done => {
         context.initialize([

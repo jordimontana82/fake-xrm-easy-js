@@ -12,7 +12,9 @@ export default interface IFakeXmlHttpRequest {
     status: number;
     relativeApiUrl: string;
     relativeUrl: string;
-    sendCallback: (body: any) => void;
+    onload: () => void;
+    onreadystatechange: () => void;
+    
 
     open(method?: string, url?: string, async?: boolean): void;
     setRequestHeader(key: string, value: any): void;

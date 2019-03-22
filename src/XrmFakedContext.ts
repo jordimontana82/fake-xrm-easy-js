@@ -9,6 +9,7 @@ import ODataParsedUrl from './ODataParsedUrl';
 import Dictionary from './Dictionary';
 import IEntity from './IEntity';
 import FakeXmlHttpRequest from './FakeXmlHttpRequest';
+import Entity from './Entity';
 
 export default class XrmFakedContext implements IXrmFakedContext 
 {
@@ -27,17 +28,22 @@ export default class XrmFakedContext implements IXrmFakedContext
         }
     }
     protected setupGlobalMock(): void {
-        if(!global.XMLHttpRequest)
-        {
-            global.XMLHttpRequest = new FakeXmlHttpRequest();
-        }
+        var self = this;
+        var fakeXhr = new FakeXmlHttpRequest();
+        fakeXhr.sendCallback = function(xhr) {
+            self.executeRequest(xhr);
+        };
+        global.XMLHttpRequest = () => fakeXhr;
+        
+        var self = this;
+
         if(!global.Xrm) 
         {
             global.Xrm = {
                 Page: {
                     context: {
                         getClientUrl: function () {
-                            return this._fakeAbsoluteUrlPrefix;
+                            return self._fakeAbsoluteUrlPrefix;
                         }
                     }
                 }
@@ -119,7 +125,41 @@ export default class XrmFakedContext implements IXrmFakedContext
     }
 
     protected executePostRequest(fakeXhr: IFakeXmlHttpRequest): void {
+        var parsedOData = this._oDataUrlParser.parse(fakeXhr.relativeUrl);
 
+        var entityName = this.getSingularSetName(parsedOData.entitySetName);
+        var jsonData = JSON.parse(fakeXhr.requestBody);
+
+        //Create a new record of the specified entity in the context
+        var id = Guid.create();
+
+        if (!this._data.containsKey(entityName)) {
+            this._data.add(entityName, new Dictionary());
+        }
+
+        var entityDictionary = this._data.get(entityName);
+        entityDictionary.add(id.toString(), new Entity(entityName, id, jsonData));
+
+        //Compose fake response
+        var response = {};
+
+        fakeXhr.status = 204;
+        fakeXhr.response = JSON.stringify({});
+        fakeXhr.readyState = 4; //Completed
+
+        //Headers
+        var entityIdUrl = this._fakeAbsoluteUrlPrefix + '/api/data/' + this._apiVersion + '/' + parsedOData.entitySetName + '(' + id.toString() + ')'; 
+        fakeXhr.setResponseHeader("OData-EntityId", entityIdUrl);
+
+        //Force onload
+        if (fakeXhr.onload) {
+            fakeXhr.onload();
+            return;
+        }
+
+        //Force callback
+        if (fakeXhr.onreadystatechange)
+            fakeXhr.onreadystatechange();
     }
 
     protected executeGetRequest(fakeXhr: IFakeXmlHttpRequest): void {

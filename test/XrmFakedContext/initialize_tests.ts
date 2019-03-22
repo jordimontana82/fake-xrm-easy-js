@@ -5,7 +5,7 @@ var Guid = require('guid');
 var WebApiClient = require('../../webresources/js/new_WebApiClient.js');
 var fakeUrl: string = 'http://fakeUrl';
 
-describe("Web API", function () {
+describe("XrmFakedContext: Initialize", function () {
     let context: XrmFakedContext = null;
     beforeEach(() => {
         context = new XrmFakedContext("v9.0",fakeUrl, true);

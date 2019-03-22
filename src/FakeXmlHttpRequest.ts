@@ -13,7 +13,9 @@ export default class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     status: number;
     relativeApiUrl: string;
     relativeUrl: string;
-    sendCallback: (body: any) => void;
+    sendCallback: (fakeXhr: IFakeXmlHttpRequest) => void;
+    onload: () => void;
+    onreadystatechange: () => void;
 
     constructor() {
         this.method = '';
@@ -53,6 +55,6 @@ export default class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     }
     send(body: any) {
         this.requestBody = body;
-        this.sendCallback(body);
+        this.sendCallback(this);
     }
 }
