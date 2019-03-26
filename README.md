@@ -42,13 +42,25 @@ Done:
 - Queries: Implemented $top functions
 - Create: basic create
 - Update: basic update
+- Delete: basic delete
 
 To Do:
+- [Retrieve] (https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/retrieve-entity-using-web-api)
+
+     * Basic Retrieve
+     * Single Retrieve with $select
+     * Retrieve with alternate keys
+     * Retrieve a single property value
+     * Retrieve navigation property values (similar to $expand for queries)
+
 - [Create operations](https://msdn.microsoft.com/en-us/library/gg328090.aspx)
      * Create related entities in one operation
      * Associate entities on Create
 
-- Retrieve, Delete
+- [Delete] (https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/update-delete-entities-using-web-api)
+
+     * Delete single property values
+
 - [Update](https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/update-delete-entities-using-web-api):
 
      * Update with data representation returned (simulate update + get message)

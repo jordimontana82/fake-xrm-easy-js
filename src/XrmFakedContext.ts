@@ -114,7 +114,7 @@ export default class XrmFakedContext implements IXrmFakedContext
                 case "PUT":
                     throw 'PUT method not yet supported';
                 case "DELETE":
-                    throw 'DELETE method not yet supported';
+                    this.executeDeleteRequest(fakeXhr);
                 case "PATCH":
                     this.executePatchRequest(fakeXhr);
             }
@@ -189,6 +189,48 @@ export default class XrmFakedContext implements IXrmFakedContext
         }
         else {
             entityDictionary.add(id.toString(), new Entity(entityName, id, jsonData));
+        }
+        
+        //Compose fake response
+        var response = {};
+
+        fakeXhr.status = 204;
+        fakeXhr.response = JSON.stringify({});
+        fakeXhr.readyState = 4; //Completed
+
+        //Force onload
+        if (fakeXhr.onload) {
+            fakeXhr.onload();
+            return;
+        }
+
+        //Force callback
+        if (fakeXhr.onreadystatechange)
+            fakeXhr.onreadystatechange();
+    }
+
+    protected executeDeleteRequest(fakeXhr: IFakeXmlHttpRequest): void {
+        var parsedOData = this._oDataUrlParser.parse(fakeXhr.relativeUrl);
+
+        var entityName = this.getSingularSetName(parsedOData.entitySetName);
+        var jsonData = JSON.parse(fakeXhr.requestBody);
+
+        if(!parsedOData.id || parsedOData.id == "") {
+            throw "Delete message requires an id";
+        }
+
+        var id = parsedOData.id;
+
+        if (!this._data.containsKey(entityName)) {
+            this._data.add(entityName, new Dictionary());
+        }
+
+        var entityDictionary = this._data.get(entityName);
+        if(entityDictionary.containsKey(id)) {
+            entityDictionary.remove(id);
+        }
+        else {
+            throw 'Entity with entity name = "' + entityName + '" and id="' +  id + '"does not exist';
         }
         
         //Compose fake response

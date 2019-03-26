@@ -99,6 +99,36 @@
         xhr.send(JSON.stringify(data));
     }
 
+    function deleteRecord(entityName, id, successCallback, errorCallback) {
+        var xhr: any = new XMLHttpRequest();
+
+        var clientUrl = Xrm.Page.context.getClientUrl();
+
+        var entityUrl = clientUrl + "/api/data/" + version + "/" + entityName + '(' + id + ')';
+        xhr.open("DELETE", encodeURI(entityUrl), true);
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        xhr.setRequestHeader("OData-MaxVersion", "4.0");
+        xhr.setRequestHeader("OData-Version", "4.0");
+
+        xhr.onreadystatechange = function () {
+            if (this.readyState == 4/* complete */) {
+                xhr.onreadystatechange = null;
+                if (this.status == 204) {
+                    var data = JSON.parse(this.response);
+                    if (successCallback) {
+                            successCallback(xhr);
+                    }
+                }
+                else {
+                    var error = JSON.parse(this.response).error;
+                    console.log(error.message);
+                }
+            }
+        };
+        xhr.send(null);
+    }
+
     function getMultipleRecords(query, successCallback, errorCallback) {
         var req = new XMLHttpRequest();
 
@@ -131,6 +161,7 @@
     exports.retrieveMultiple = getMultipleRecords;
     exports.create = create;
     exports.update = update;
+    exports.delete = deleteRecord;
 
 })(typeof exports === 'undefined' ? this['WebApiClient'] = {} : exports);
 
