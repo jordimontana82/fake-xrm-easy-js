@@ -43,12 +43,11 @@ Done:
 - Create: basic create
 - Update: basic update
 - Delete: basic delete
+- Retrieve: basic retrieve, retrieve with $select
 
 To Do:
 - [Retrieve](https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/retrieve-entity-using-web-api)
 
-     * Basic Retrieve
-     * Single Retrieve with $select
      * Retrieve with alternate keys
      * Retrieve a single property value
      * Retrieve navigation property values (similar to $expand for queries)

@@ -34,6 +34,23 @@ describe("XrmFakedContext Queries: $select", function () {
 
     });
 
+    test("it should return a a single record if a single entity was requested", done => {
+        var existingId = Guid.create();
+        context.initialize([
+            new Entity("contact", Guid.create(), {firstname: 'Contact 1', other: "other"}),
+            new Entity("contact", existingId, {firstname: 'Contact 2', other: "Other2"})
+        ]);
+
+        WebApiClient.retrieveMultiple("contacts(" + existingId.toString() + ")?$select=firstname", function (data) {
+            expect(data.value.length).toBe(1);
+            expect(data.value[0].firstname).toBe("Contact 2");
+            expect(data.value[0].other).toBe(undefined);
+            
+            done();
+        });
+
+    });
+
     test("it should retrieve fields specified in $select clause only", done => {
         context.initialize([
             new Entity("account", Guid.create(), {name: 'Company 1', revenue: 3000, other: "somevalue"}),

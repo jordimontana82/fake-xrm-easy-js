@@ -317,6 +317,7 @@ export default class XrmFakedContext implements IXrmFakedContext
         var topCount = parsedQuery.queryParams ? parsedQuery.queryParams['$top'] : null;
 
         var queryeable = Enumerable.from(records)
+            .where((e, index) => { return parsedQuery.id && parsedQuery.id !== "" ? parsedQuery.id == e.id.toString() : true })  //Single id filter if retrieving single record
             .where((e, index) => { return e.satisfiesFilter(filter); })
             .select((e, index) => { return e.projectAttributes(columnSet); });
             
