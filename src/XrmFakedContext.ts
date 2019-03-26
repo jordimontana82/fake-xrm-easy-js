@@ -116,7 +116,7 @@ export default class XrmFakedContext implements IXrmFakedContext
                 case "DELETE":
                     throw 'DELETE method not yet supported';
                 case "PATCH":
-                    throw 'PATCH method not yet supported';
+                    this.executePatchRequest(fakeXhr);
             }
             
         }
@@ -151,6 +151,52 @@ export default class XrmFakedContext implements IXrmFakedContext
         //Headers
         var entityIdUrl = this._fakeAbsoluteUrlPrefix + '/api/data/' + this._apiVersion + '/' + parsedOData.entitySetName + '(' + id.toString() + ')'; 
         fakeXhr.setResponseHeader("OData-EntityId", entityIdUrl);
+
+        //Force onload
+        if (fakeXhr.onload) {
+            fakeXhr.onload();
+            return;
+        }
+
+        //Force callback
+        if (fakeXhr.onreadystatechange)
+            fakeXhr.onreadystatechange();
+    }
+
+    protected executePatchRequest(fakeXhr: IFakeXmlHttpRequest): void {
+        var parsedOData = this._oDataUrlParser.parse(fakeXhr.relativeUrl);
+
+        var entityName = this.getSingularSetName(parsedOData.entitySetName);
+        var jsonData = JSON.parse(fakeXhr.requestBody);
+
+        if(!parsedOData.id || parsedOData.id == "") {
+            throw "Patch message requires an id";
+        }
+
+        var id = parsedOData.id;
+
+        if (!this._data.containsKey(entityName)) {
+            this._data.add(entityName, new Dictionary());
+        }
+
+        var entityDictionary = this._data.get(entityName);
+        if(entityDictionary.containsKey(id)) {
+            var currentEntity = entityDictionary.get(id);
+            for(var attr in jsonData) {
+                currentEntity.attributes[attr] = jsonData[attr];
+            }
+            entityDictionary.set(id, currentEntity);
+        }
+        else {
+            entityDictionary.add(id.toString(), new Entity(entityName, id, jsonData));
+        }
+        
+        //Compose fake response
+        var response = {};
+
+        fakeXhr.status = 204;
+        fakeXhr.response = JSON.stringify({});
+        fakeXhr.readyState = 4; //Completed
 
         //Force onload
         if (fakeXhr.onload) {

@@ -87,17 +87,7 @@
                 if (this.status == 204) {
                     var data = JSON.parse(this.response);
                     if (successCallback) {
-                        //GetResponseHeader
-                        var entityIdUrl = xhr.getResponseHeader("OData-EntityId");
-                        if (entityIdUrl) {
-                            //Get just the ID
-                            var guid = entityIdUrl.replace(entityUrl, "")
-                                .replace("(", "")
-                                .replace(")", "");
-
-                            successCallback(guid, xhr);
-                        }
-                        
+                            successCallback(xhr);
                     }
                 }
                 else {
@@ -140,6 +130,7 @@
     exports.get = getRecords;
     exports.retrieveMultiple = getMultipleRecords;
     exports.create = create;
+    exports.update = update;
 
 })(typeof exports === 'undefined' ? this['WebApiClient'] = {} : exports);
 
