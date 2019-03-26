@@ -45,7 +45,7 @@ Done:
 - Delete: basic delete
 
 To Do:
-- [Retrieve] (https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/retrieve-entity-using-web-api)
+- [Retrieve](https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/retrieve-entity-using-web-api)
 
      * Basic Retrieve
      * Single Retrieve with $select
@@ -57,7 +57,7 @@ To Do:
      * Create related entities in one operation
      * Associate entities on Create
 
-- [Delete] (https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/update-delete-entities-using-web-api)
+- [Delete](https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/update-delete-entities-using-web-api)
 
      * Delete single property values
 
