@@ -2,6 +2,7 @@
 
 This project aims to provide mocks already implemented for Web API calls made from Javascript. This is a work in progress and way less mature than its C# counterpart.
 
+[![Build Status](https://dev.azure.com/fake-xrm-easy/Blank/_apis/build/status/fake-xrm-easy-js?branchName=master)](https://dev.azure.com/fake-xrm-easy/Blank/_build/latest?definitionId=1&branchName=master)
 [![NPM](https://img.shields.io/npm/v/fakexrmeasy.svg)](https://www.npmjs.com/package/fakexrmeasy)
 
 
