@@ -1,8 +1,9 @@
 {
   "name": "fakexrmeasy",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
-  "main": "src/xrmFakedContext.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "@jordimontana",
   "directories": {
     "src": "src",
@@ -17,11 +18,9 @@
   "devDependencies": {
     "@types/jest": "^22.2.3",
     "@types/node": "8.10.12",
-    "@types/sinon": "^5.0.1",
     "@types/xrm": "8.2.10",
     "@types/jquery": "3.3.29",
     "jest": "^22.4.4",
-    "sinon": "^5.1.1",
     "ts-jest": "^22.4.6",
     "tslint": "^5.10.0",
     "typescript": "^2.8.3",

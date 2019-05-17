@@ -1,4 +1,3 @@
-
 export default interface IFakeXmlHttpRequest {
     method: string;
     url: string;
@@ -15,8 +14,6 @@ export default interface IFakeXmlHttpRequest {
     relativeUrl: string;
     onload: () => void;
     onreadystatechange: () => void;
-    
-
     open(method?: string, url?: string, async?: boolean): void;
     setRequestHeader(key: string, value: any): void;
     getRequestHeader(key: string): any;

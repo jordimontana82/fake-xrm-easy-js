@@ -1,5 +1,5 @@
-
-export default interface IFakeXmlHttpRequest {
+import IFakeXmlHttpRequest from './IFakeXmlHttpRequest';
+export default class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     method: string;
     url: string;
     async: boolean;
@@ -13,10 +13,10 @@ export default interface IFakeXmlHttpRequest {
     status: number;
     relativeApiUrl: string;
     relativeUrl: string;
+    sendCallback: (fakeXhr: IFakeXmlHttpRequest) => void;
     onload: () => void;
     onreadystatechange: () => void;
-    
-
+    constructor();
     open(method?: string, url?: string, async?: boolean): void;
     setRequestHeader(key: string, value: any): void;
     getRequestHeader(key: string): any;

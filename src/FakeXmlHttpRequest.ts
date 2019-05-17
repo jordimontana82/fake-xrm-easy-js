@@ -5,11 +5,11 @@ export default class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     url: string;
     async: boolean;
     requestBody: any;
-    requestHeaders: [];
+    requestHeaders: Array<any>;
     response: any;
     responseText: string;
     responseXML: any;
-    responseHeaders: [];
+    responseHeaders: Array<any>;
     readyState: number;
     status: number;
     relativeApiUrl: string;
