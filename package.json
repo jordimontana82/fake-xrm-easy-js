@@ -1,0 +1,74 @@
+{
+  "name": "fakexrmeasy",
+  "version": "1.0.2",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "@jordimontana",
+  "directories": {
+    "src": "src",
+    "test": "test"
+  },
+  "dependencies": {
+    "xmlhttprequest": "1.8.0",
+    "odata-parser": "1.4.1",
+    "guid": "0.0.12",
+    "linq": "3.1.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.2.3",
+    "@types/node": "8.10.12",
+    "@types/xrm": "8.2.10",
+    "@types/jquery": "3.3.29",
+    "jest": "^22.4.4",
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "typescript": "^2.8.3",
+    "linq": "3.1.1"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordimontana82/fake-xrm-easy-js.git"
+  },
+  "keywords": [
+    "dynamics",
+    "dynamics 365",
+    "crm",
+    "test",
+    "unit",
+    "testing",
+    "fake",
+    "mock",
+    "xrm"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jordimontana82/fake-xrm-easy-js/issues"
+  },
+  "homepage": "http://dynamicsvalue.com",
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "node"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testURL": "http://localhost/",
+    "testMatch": [
+      "**/test/**/*.+(ts|js)"
+    ],
+    "setupFiles": [
+      "./setup/setup-jest.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      ".d.ts"
+    ]
+  }
+}

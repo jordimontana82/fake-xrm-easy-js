@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "noEmit": false,
+        "outDir": "dist",
+        "declaration": true,
+        "sourceMap": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "wwwroot",
+        "test"
+    ],
+    "include": [
+        "src"
+    ]
+}
