@@ -2,6 +2,6 @@
 
 /// <amd-module name="fakexrmeasy"/>
 
-export * from './XrmFakedContext';
-export * from './Entity';
-export * from './FakeXmlHttpRequest';
+export { XrmFakedContext } from './XrmFakedContext';
+export { Entity } from './Entity';
+export { FakeXmlHttpRequest } from './FakeXmlHttpRequest';

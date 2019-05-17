@@ -1,5 +1,5 @@
-import XrmFakedContext from '../../src/XrmFakedContext';
-import Entity from '../../src/Entity';
+import { XrmFakedContext } from '../../src/XrmFakedContext';
+import { Entity } from '../../src/Entity';
 
 var Guid = require('guid');
 

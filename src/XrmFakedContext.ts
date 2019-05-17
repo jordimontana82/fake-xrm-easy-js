@@ -9,10 +9,10 @@ import ODataUrlParser from './ODataUrlParser';
 import ODataParsedUrl from './ODataParsedUrl';
 import Dictionary from './Dictionary';
 import IEntity from './IEntity';
-import FakeXmlHttpRequest from './FakeXmlHttpRequest';
-import Entity from './Entity';
+import { FakeXmlHttpRequest } from './FakeXmlHttpRequest';
+import { Entity } from './Entity';
 
-export default class XrmFakedContext implements IXrmFakedContext 
+export class XrmFakedContext implements IXrmFakedContext 
 {
     readonly _apiVersion: string = "v9.0";
     readonly _fakeAbsoluteUrlPrefix: string = "http://fakecrmurl:5555/fakeOrgName";

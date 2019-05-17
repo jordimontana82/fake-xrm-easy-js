@@ -1,14 +1,14 @@
-import XrmFakedContext from '../../src/XrmFakedContext';
-import Entity from '../../src/Entity';
-import * as Guid from 'guid';
+import { XrmFakedContext } from '../../src/XrmFakedContext';
+import { Entity } from '../../src/Entity';
 
+var Guid = require('guid');
 var WebApiClient = require('../../webresources/new_WebApiClient.ts');
 var fakeUrl: string = 'http://fakeUrl';
 
 describe("XrmFakedContext: Delete", function () {
-    let context: XrmFakedContext = null;
+    var context: XrmFakedContext;
     let fakeXhr: any = null;
-    var idToDelete: Guid = Guid.create();
+    var idToDelete = Guid.create();
 
     beforeEach(() => {
         context = new XrmFakedContext("v9.0",fakeUrl, true);
@@ -21,19 +21,19 @@ describe("XrmFakedContext: Delete", function () {
     test("it should delete an account with properties if exists", done => {
         WebApiClient.delete("accounts", idToDelete.toString(), function success(xhr) {
 
-                //verify an account was created with the exact same fields
-                var accounts = context.getAllData().get("account").values();
-                expect(accounts.length).toBe(1);
-                
-                var accountDeleted = context.getAllData().get("account").get(idToDelete.toString());
+            //verify an account was created with the exact same fields
+            var accounts = context.getAllData().get("account").values();
+            expect(accounts.length).toBe(1);
+            
+            var accountDeleted = context.getAllData().get("account").get(idToDelete.toString());
 
-                //Attributes updated
-                expect(accountDeleted).toBe(undefined);
-                
-                //verify xhr response
-                expect(xhr.status).toBe(204);
+            //Attributes updated
+            expect(accountDeleted).toBe(undefined);
+            
+            //verify xhr response
+            expect(xhr.status).toBe(204);
 
-                done();
+            done();
         });
     });
 

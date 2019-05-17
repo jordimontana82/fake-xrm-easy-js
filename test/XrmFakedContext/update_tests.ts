@@ -1,14 +1,14 @@
-import XrmFakedContext from '../../src/XrmFakedContext';
-import Entity from '../../src/Entity';
-import * as Guid from 'guid';
+import { XrmFakedContext } from '../../src/XrmFakedContext';
+import { Entity } from '../../src/Entity';
 
+var Guid = require('guid');
 var WebApiClient = require('../../webresources/new_WebApiClient.ts');
 var fakeUrl: string = 'http://fakeUrl';
 
 describe("XrmFakedContext: Update", function () {
     let context: XrmFakedContext = null;
     let fakeXhr: any = null;
-    var idToUpdate: Guid = Guid.create();
+    var idToUpdate = Guid.create();
 
     beforeEach(() => {
         context = new XrmFakedContext("v9.0",fakeUrl, true);
