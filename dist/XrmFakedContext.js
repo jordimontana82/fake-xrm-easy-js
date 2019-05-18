@@ -20,7 +20,7 @@ var XrmFakedContext = /** @class */ (function () {
     }
     XrmFakedContext.prototype.setupGlobalMock = function () {
         var self = this;
-        var fakeXhr = new FakeXmlHttpRequest_1.default();
+        var fakeXhr = new FakeXmlHttpRequest_1.FakeXmlHttpRequest();
         fakeXhr.sendCallback = function (xhr) {
             self.executeRequest(xhr);
         };
@@ -109,7 +109,7 @@ var XrmFakedContext = /** @class */ (function () {
             this._data.add(entityName, new Dictionary_1.default());
         }
         var entityDictionary = this._data.get(entityName);
-        entityDictionary.add(id.toString(), new Entity_1.default(entityName, id, jsonData));
+        entityDictionary.add(id.toString(), new Entity_1.Entity(entityName, id, jsonData));
         //Compose fake response
         var response = {};
         fakeXhr.status = 204;
@@ -147,7 +147,7 @@ var XrmFakedContext = /** @class */ (function () {
             entityDictionary.set(id, currentEntity);
         }
         else {
-            entityDictionary.add(id.toString(), new Entity_1.default(entityName, id, jsonData));
+            entityDictionary.add(id.toString(), new Entity_1.Entity(entityName, id, jsonData));
         }
         //Compose fake response
         var response = {};
@@ -263,5 +263,5 @@ var XrmFakedContext = /** @class */ (function () {
     };
     return XrmFakedContext;
 }());
-exports.default = XrmFakedContext;
+exports.XrmFakedContext = XrmFakedContext;
 //# sourceMappingURL=XrmFakedContext.js.map

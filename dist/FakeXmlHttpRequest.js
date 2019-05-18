@@ -40,5 +40,5 @@ var FakeXmlHttpRequest = /** @class */ (function () {
     };
     return FakeXmlHttpRequest;
 }());
-exports.default = FakeXmlHttpRequest;
+exports.FakeXmlHttpRequest = FakeXmlHttpRequest;
 //# sourceMappingURL=FakeXmlHttpRequest.js.map

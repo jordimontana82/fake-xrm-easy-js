@@ -137,5 +137,5 @@ var Entity = /** @class */ (function () {
     };
     return Entity;
 }());
-exports.default = Entity;
+exports.Entity = Entity;
 //# sourceMappingURL=Entity.js.map

@@ -4,7 +4,7 @@ import IODataUrlParser from './IODataUrlParser';
 import ODataParsedUrl from './ODataParsedUrl';
 import Dictionary from './Dictionary';
 import IEntity from './IEntity';
-export default class XrmFakedContext implements IXrmFakedContext {
+export declare class XrmFakedContext implements IXrmFakedContext {
     readonly _apiVersion: string;
     readonly _fakeAbsoluteUrlPrefix: string;
     readonly _oDataUrlParser: IODataUrlParser;

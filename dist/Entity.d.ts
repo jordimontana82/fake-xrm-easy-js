@@ -1,6 +1,6 @@
 import IEntity from './IEntity';
 import Guid from 'guid';
-export default class Entity implements IEntity {
+export declare class Entity implements IEntity {
     logicalName: string;
     id: Guid;
     attributes: any;

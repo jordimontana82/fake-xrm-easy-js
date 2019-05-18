@@ -1,5 +1,5 @@
 import IFakeXmlHttpRequest from './IFakeXmlHttpRequest';
-export default class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
+export declare class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     method: string;
     url: string;
     async: boolean;
