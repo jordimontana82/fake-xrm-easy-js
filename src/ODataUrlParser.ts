@@ -5,7 +5,8 @@ import * as odataParser from 'odata-parser';
 export default class ODataUrlParser implements IODataUrlParser {
     parse(url: string): ODataParsedUrl {
         var result = new ODataParsedUrl();
-
+        result.wasSingleRetrieve = false;
+        
         if (url.indexOf('?') >= 0) {
             //Query
             result.entitySetName = url.split('?')[0];
@@ -24,6 +25,7 @@ export default class ODataUrlParser implements IODataUrlParser {
             var split = result.entitySetName.split('(');
             result.entitySetName = split[0];
             result.id = split[1].replace(")", "");
+            result.wasSingleRetrieve = true;
         }
         
         return result;

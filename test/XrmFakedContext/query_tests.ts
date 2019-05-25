@@ -42,9 +42,8 @@ describe("XrmFakedContext Queries: $select", function () {
         ]);
 
         WebApiClient.retrieveMultiple("contacts(" + existingId.toString() + ")?$select=firstname", function (data) {
-            expect(data.value.length).toBe(1);
-            expect(data.value[0].firstname).toBe("Contact 2");
-            expect(data.value[0].other).toBe(undefined);
+            expect(data.firstname).toBe("Contact 2");
+            expect(data.other).toBe(undefined);
             
             done();
         });

@@ -269,7 +269,12 @@ export class XrmFakedContext implements IXrmFakedContext
             entities.push(odataEntity);
         }
 
-        response.value = entities;
+        if(!parsedOData.wasSingleRetrieve) {
+            response.value = entities;
+        }
+        else {
+            response = entities[0];
+        }
 
         fakeXhr.status = 200;
         fakeXhr.response = JSON.stringify(response);
