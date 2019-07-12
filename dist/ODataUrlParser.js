@@ -7,6 +7,7 @@ var ODataUrlParser = /** @class */ (function () {
     }
     ODataUrlParser.prototype.parse = function (url) {
         var result = new ODataParsedUrl_1.default();
+        result.wasSingleRetrieve = false;
         if (url.indexOf('?') >= 0) {
             //Query
             result.entitySetName = url.split('?')[0];
@@ -23,6 +24,7 @@ var ODataUrlParser = /** @class */ (function () {
             var split = result.entitySetName.split('(');
             result.entitySetName = split[0];
             result.id = split[1].replace(")", "");
+            result.wasSingleRetrieve = true;
         }
         return result;
     };
