@@ -70,5 +70,8 @@
       "/node_modules/",
       ".d.ts"
     ]
-  }
+  },
+  "files": [
+    "/dist"
+  ]
 }

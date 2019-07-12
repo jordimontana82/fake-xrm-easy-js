@@ -5,6 +5,7 @@ This project aims to provide mocks already implemented for Web API calls made fr
 [![Build Status](https://dev.azure.com/fake-xrm-easy/Blank/_apis/build/status/fake-xrm-easy-js?branchName=master)](https://dev.azure.com/fake-xrm-easy/Blank/_build/latest?definitionId=1&branchName=master)
 [![NPM](https://img.shields.io/npm/v/fakexrmeasy.svg)](https://www.npmjs.com/package/fakexrmeasy)
 
+NEW: Dependency on edge.js has been removed, the npm runs entirely in the npm process only (no clr code running behind the scenes) which provide an easier setup and much better performance.
 
 # Goals
 
@@ -33,6 +34,10 @@ So roughly, the following steps:
     -> 2) Parse OData Query 
     -> 3) Translate OData query into Linq to objects (in javascript), and execute it 
     -> 4) Compose a fakeXhr response following Web Api specification
+
+# Samples
+
+Check [this repo](https://github.com/jordimontana82/fake-xrm-easy-js-samples) for a sample code project.
 
 # Backlog
 
