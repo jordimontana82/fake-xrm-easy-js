@@ -27,10 +27,10 @@ describe("XrmFakedContext: Update", function () {
             }, function success(xhr) {
 
                 //verify an account was created with the exact same fields
-                var accounts = context.getAllData().get("account").values();
+                var accounts = context.createQuery("account").toArray();
                 expect(accounts.length).toBe(2);
                 
-                var accountUpdated = context.getAllData().get("account").get(idToUpdate.toString()).toXrmEntity();
+                var accountUpdated = context.getEntity("account", idToUpdate.toString()).toXrmEntity();
 
                 //Attributes updated
                 expect(accountUpdated["name"]).toBe("Sample Account Updated");
@@ -58,10 +58,10 @@ describe("XrmFakedContext: Update", function () {
             }, function success(xhr) {
 
                 //verify an account was created with the exact same fields
-                var accounts = context.getAllData().get("account").values();
+                var accounts = context.createQuery("account").toArray();
                 expect(accounts.length).toBe(3);
                 
-                var accountUpdated = context.getAllData().get("account").get(newId.toString()).toXrmEntity();
+                var accountUpdated = context.getEntity("account", newId.toString()).toXrmEntity();
 
                 //Attributes updated
                 expect(accountUpdated["name"]).toBe("Sample Account Updated");

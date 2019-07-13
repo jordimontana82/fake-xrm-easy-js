@@ -22,7 +22,7 @@ describe("XrmFakedContext: Create", function () {
             }, function success(guid, xhr) {
 
                 //verify an account was created with the exact same fields
-                var accountCreated = context.getAllData().get("account").get(guid);
+                var accountCreated = context.getEntity("account", guid);
 
                 expect(accountCreated.attributes["name"]).toBe("Sample Account");
                 expect(accountCreated.attributes["creditonhold"]).toBe(false);
