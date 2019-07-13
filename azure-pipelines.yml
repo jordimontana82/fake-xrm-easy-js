@@ -22,5 +22,9 @@ steps:
   displayName: 'npm install and build'
 
 - script: |
+    npm run build:tests
+  displayName: 'build tests'
+
+- script: |
     npm run test
   displayName: 'npm test with jest'
