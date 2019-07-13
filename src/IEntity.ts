@@ -1,6 +1,6 @@
 import IGuid from './IGuid';
 
-export default interface IEntity {
+export interface IEntity {
     logicalName: string;
     id: IGuid;
     attributes: any;

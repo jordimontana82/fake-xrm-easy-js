@@ -1,4 +1,4 @@
-import IEntity from './IEntity';
+import { IEntity } from './IEntity';
 import Guid from 'guid';
 
 export class Entity implements IEntity 
