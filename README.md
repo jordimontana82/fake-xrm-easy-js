@@ -44,6 +44,7 @@ Done:
 - Update: basic update
 - Delete: basic delete
 - Retrieve: basic retrieve, retrieve with $select
+- Ability to add custom Web API functions / custom action mocks: please check test/XrmFakedContext/fake_message_executor_tests.ts for examples
 
 To Do:
 - [Retrieve](https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/retrieve-entity-using-web-api)
@@ -66,7 +67,6 @@ To Do:
      * Update by single attribute (PUT)
      * Limit upsert via headers (If-Match, If-Not-Match)
      
-- Ability to add custom Web API functions / custom action mocks
 - Queries: Implement $expand functions
 - Queries: Implement $orderby functions 
 - Queries: Implement lookup filtering

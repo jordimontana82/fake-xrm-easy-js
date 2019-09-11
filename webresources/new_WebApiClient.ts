@@ -156,12 +156,41 @@
         };
         req.send(null);
     }
+
+    function getWhoAmI(successCallback, errorCallback) {
+        var req = new XMLHttpRequest();
+
+        var clientUrl = Xrm.Page.context.getClientUrl();
+
+        req.open("GET", encodeURI(clientUrl + "/api/data/" + version + "/WhoAmI"), true);
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req.setRequestHeader("OData-MaxVersion", "4.0");
+        req.setRequestHeader("OData-Version", "4.0");
+        req.onreadystatechange = function () {
+            if (this.readyState == 4/* complete */) {
+                req.onreadystatechange = null;
+                if (this.status == 200) {
+                    var data = JSON.parse(this.response);
+                    if (successCallback) {
+                        successCallback(data);
+                    }
+                }
+                else {
+                    var error = JSON.parse(this.response).error;
+                    console.log(error.message);
+                }
+            }
+        };
+        req.send(null);
+    }
     
     exports.get = getRecords;
     exports.retrieveMultiple = getMultipleRecords;
     exports.create = create;
     exports.update = update;
     exports.delete = deleteRecord;
+    exports.whoAmI = getWhoAmI;
 
 })(typeof exports === 'undefined' ? this['WebApiClient'] = {} : exports);
 
