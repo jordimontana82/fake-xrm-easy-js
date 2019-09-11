@@ -1,14 +1,14 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "dist",
+        "outDir": "testoutput",
     },
     "exclude": [
         "node_modules",
         "wwwroot",
-        "test"
+        "src"
     ],
     "include": [
-        "src"
+        "test"
     ]
 }

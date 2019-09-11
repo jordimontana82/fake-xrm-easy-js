@@ -2,13 +2,13 @@
 var Guid = require('guid');
 import * as Enumerable from 'linq';
 
-import IXrmFakedContext from './IXrmFakedContext';
+import { IXrmFakedContext } from './IXrmFakedContext';
 import IFakeXmlHttpRequest from './IFakeXmlHttpRequest';
 import IODataUrlParser from './IODataUrlParser';
 import ODataUrlParser from './ODataUrlParser';
 import ODataParsedUrl from './ODataParsedUrl';
 import Dictionary from './Dictionary';
-import IEntity from './IEntity';
+import { IEntity } from './IEntity';
 import { FakeXmlHttpRequest } from './FakeXmlHttpRequest';
 import { Entity } from './Entity';
 import IFakeMessageExecutor from './IFakeMessageExecutor';
@@ -83,10 +83,61 @@ export class XrmFakedContext implements IXrmFakedContext
             }
         }
     }
-    getAllData():  Dictionary<Dictionary<IEntity>> {
+    getEntity(logicalName: string, id: string) {
+        if(!this._data.containsKey(logicalName)) {
+            throw `Entity with logicalName '${logicalName}' does not exist`;
+        }
+        if(!this.getAllData().get(logicalName).containsKey(id)) {
+            throw `Entity with logicalName '${logicalName}' and id '${id}' does not exist`;
+        }
+        return this.getAllData().get(logicalName).get(id);
+    }
+    addEntity(entity: IEntity): string {
+        var id = entity.id;
+        if(!id) {
+            id = Guid.create();
+        }
+        if(!this._data.containsKey(entity.logicalName)) {
+            this._data.add(entity.logicalName, new Dictionary<IEntity>());
+        }
+        this._data[entity.logicalName].add(id.toString(), entity);
+        return id.toString();
+    }
+    removeEntity(logicalName: string, id: string): void {
+        var entity = this.getEntity(logicalName, id); //should throw if not exists
+        this._data.get(logicalName).remove(id);
+    }
+    updateEntity(entity: IEntity): void {
+        var existingEntity = this.getEntity(entity.logicalName, entity.id.toString());
+
+        for(var attribute in entity.attributes) {
+            existingEntity.attributes[attribute] = entity.attributes[attribute];
+        }
+        this._data.get(entity.logicalName).set(entity.id.toString(), existingEntity);
+    }
+
+    replaceEntity(entity: IEntity): void {
+        var existingEntity = this.getEntity(entity.logicalName, entity.id.toString());
+
+        this._data.get(entity.logicalName).set(entity.id.toString(), entity);
+    }
+
+    createQuery(logicalName: string): Enumerable.IEnumerable<IEntity> 
+    {
+        if(!this._data.containsKey(logicalName)) {
+            throw `Entity with logicalName '${logicalName}' does not exist`;
+        }
+
+        var entities = this._data.get(logicalName).values();
+        var queryable = Enumerable.from(entities);
+        return queryable;
+    }
+
+    protected getAllData():  Dictionary<Dictionary<IEntity>> {
         return this._data;
     }
-    executeRequest(fakeXhr: IFakeXmlHttpRequest): void {
+    
+    protected executeRequest(fakeXhr: IFakeXmlHttpRequest): void {
         //Only process requests which belong to the CRM URL
         if (fakeXhr.url.indexOf(this._fakeAbsoluteUrlPrefix) < 0) {
             return;

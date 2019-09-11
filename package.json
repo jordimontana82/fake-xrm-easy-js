@@ -28,7 +28,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "build:tests": "tsc -p tsconfig.test.json"
   },
   "repository": {
     "type": "git",
@@ -61,7 +62,7 @@
     },
     "testURL": "http://localhost/",
     "testMatch": [
-      "**/test/**/*.+(ts|js)"
+      "<rootDir>/test/**/*.+(ts|js)"
     ],
     "setupFiles": [
       "./setup/setup-jest.js"

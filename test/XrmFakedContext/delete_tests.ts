@@ -22,13 +22,10 @@ describe("XrmFakedContext: Delete", function () {
         WebApiClient.delete("accounts", idToDelete.toString(), function success(xhr) {
 
             //verify an account was created with the exact same fields
-            var accounts = context.getAllData().get("account").values();
+            var accounts = context.createQuery("account").toArray();
             expect(accounts.length).toBe(1);
             
-            var accountDeleted = context.getAllData().get("account").get(idToDelete.toString());
-
-            //Attributes updated
-            expect(accountDeleted).toBe(undefined);
+            expect(() => {context.getEntity("account", idToDelete.toString()) ;}).toThrow();
             
             //verify xhr response
             expect(xhr.status).toBe(204);
@@ -43,10 +40,10 @@ describe("XrmFakedContext: Delete", function () {
         var deleteFn = () => WebApiClient.delete("accounts", newId.toString(), function success(xhr) {
 
             //verify an account was created with the exact same fields
-            var accounts = context.getAllData().get("account").values();
+            var accounts = context.createQuery("account").toArray();
             expect(accounts.length).toBe(3);
             
-            var accountUpdated = context.getAllData().get("account").get(newId.toString()).toXrmEntity();
+            var accountUpdated = context.getEntity("account", newId.toString()).toXrmEntity();
 
             //Attributes updated
             expect(accountUpdated["name"]).toBe("Sample Account Updated");

@@ -17,8 +17,7 @@ describe("XrmFakedContext: Initialize", function () {
             new Entity("account", Guid.create(), {name: 'Company 2', revenue: 100001, other: "someothervalue"})
         ]);
 
-        var allData = context.getAllData();
-        var accounts = allData.get("account").values();
+        var accounts = context.createQuery("account").toArray();
 
         expect(accounts.length).toBe(2); //2 records
         expect(accounts[0].attributes["name"]).toBe("Company 1");
