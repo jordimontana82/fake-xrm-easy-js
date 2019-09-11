@@ -11,18 +11,21 @@ import Dictionary from './Dictionary';
 import IEntity from './IEntity';
 import { FakeXmlHttpRequest } from './FakeXmlHttpRequest';
 import { Entity } from './Entity';
+import IFakeMessageExecutor from './IFakeMessageExecutor';
 
 export class XrmFakedContext implements IXrmFakedContext 
 {
     readonly _apiVersion: string = "v9.0";
     readonly _fakeAbsoluteUrlPrefix: string = "http://fakecrmurl:5555/fakeOrgName";
     readonly _oDataUrlParser: IODataUrlParser = new ODataUrlParser();
+    private _executors: IFakeMessageExecutor[] = [];
     private _data: Dictionary<Dictionary<IEntity>>;
 
     constructor(apiVersion: string, fakeAbsoluteUrlPrefix: string, autoMockGlobalNamespace?: boolean) {
         this._apiVersion = apiVersion;
         this._fakeAbsoluteUrlPrefix = fakeAbsoluteUrlPrefix;
         this._data = new Dictionary();
+        this._executors = [];
 
         if(autoMockGlobalNamespace) {
             this.setupGlobalMock();
@@ -100,6 +103,13 @@ export class XrmFakedContext implements IXrmFakedContext
         //get url part after version
         fakeXhr.relativeUrl = fakeXhr.relativeApiUrl.replace("/api/data/" + this._apiVersion + "/", "");
 
+        //Check if a custom fake executor exists for that request (relativeUrl and method)
+        var executor = this.findExecutorFor(fakeXhr.relativeUrl, fakeXhr.method.toUpperCase());
+        if(executor) {
+            this.executeCustomExecutor(executor, fakeXhr);
+            return;
+        }
+
         //Undo substring and parse body
         if (fakeXhr.requestHeaders["Content-Type"] &&
             fakeXhr.requestHeaders["Content-Type"].indexOf("application/json") >= 0) {
@@ -123,6 +133,10 @@ export class XrmFakedContext implements IXrmFakedContext
         else {
             throw 'Content-Type not supported. Fake server supports JSON requests only';
         }
+    }
+
+    addFakeMessageExecutor(executor: IFakeMessageExecutor): void {
+        this._executors.push(executor);
     }
 
     protected executePostRequest(fakeXhr: IFakeXmlHttpRequest): void {
@@ -341,5 +355,34 @@ export class XrmFakedContext implements IXrmFakedContext
         }
 
         return result;
+    }
+
+    protected findExecutorFor(relativeUrl: string, method: string): IFakeMessageExecutor {
+        for(var i=0; i < this._executors.length; i++) {
+            var potentialExecutor = this._executors[i];
+            if(potentialExecutor.method === method && potentialExecutor.relativeUrl === relativeUrl) 
+                return potentialExecutor;
+        }
+
+        return null;
+    }
+
+    protected executeCustomExecutor(executor: IFakeMessageExecutor, fakeXhr: IFakeXmlHttpRequest): void {
+        var response = executor.execute(fakeXhr.requestBody);
+
+        var fakeXhrResponse = {};
+        fakeXhr.status = response.statusCode;
+        fakeXhr.response = JSON.stringify(response.responseBody);
+        fakeXhr.responseText = JSON.stringify(response.responseBody);
+        fakeXhr.readyState = 4; //Completed
+
+        //Force onload
+        if (fakeXhr.onload) {
+            fakeXhr.onload();
+            return;
+        }
+
+        if (fakeXhr.onreadystatechange)
+            fakeXhr.onreadystatechange();
     }
 }
