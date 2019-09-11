@@ -8,10 +8,7 @@ export interface IXrmFakedContext {
      * @param entities an array of entities that will be used to initialize the context's initial state
     **/
     initialize(entities: Array<IEntity>): void;
-    executeRequest(fakeXhr: IFakeXmlHttpRequest): void;
     addFakeMessageExecutor(executor: IFakeMessageExecutor): void;
-
-    //executeRequest(fakeXhr: IFakeXmlHttpRequest): void;
     
     /** 
      * @param logicalName the logicalName of the entity to be retrieved

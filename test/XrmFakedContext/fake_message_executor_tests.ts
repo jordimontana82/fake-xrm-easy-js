@@ -1,5 +1,5 @@
-import XrmFakedContext from '../../src/XrmFakedContext';
-import FakeXmlHttpRequest from '../../src/FakeXmlHttpRequest';
+import { XrmFakedContext } from '../../src/XrmFakedContext';
+import { FakeXmlHttpRequest } from '../../src/FakeXmlHttpRequest';
 
 var WebApiClient = require('../../webresources/new_WebApiClient.ts');
 var fakeUrl: string = 'http://fakeUrl';
