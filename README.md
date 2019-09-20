@@ -52,7 +52,8 @@ Done:
 - Retrieve: basic retrieve, retrieve with $select
 - Ability to add custom Web API functions / custom action mocks: please check test/XrmFakedContext/fake_message_executor_tests.ts for examples
 
-To Do:
+To Do (you can use addFakeMessageExecutor function to mock any response while these are not yet implemented as a workaround) :
+
 - [Retrieve](https://docs.microsoft.com/en-us/dynamics365/customer-engagement/developer/webapi/retrieve-entity-using-web-api)
 
      * Retrieve with alternate keys
