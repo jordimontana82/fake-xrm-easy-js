@@ -34,7 +34,7 @@ describe("XrmFakedContext Queries: $select", function () {
 
     });
 
-    test("it should return a a single record if a single entity was requested", done => {
+    test("it should return a single record if a single entity was requested", done => {
         var existingId = Guid.create();
         context.initialize([
             new Entity("contact", Guid.create(), {firstname: 'Contact 1', other: "other"}),
@@ -43,6 +43,22 @@ describe("XrmFakedContext Queries: $select", function () {
 
         WebApiClient.retrieveMultiple("contacts(" + existingId.toString() + ")?$select=firstname", function (data) {
             expect(data.firstname).toBe("Contact 2");
+            expect(data.other).toBe(undefined);
+            
+            done();
+        });
+
+    });
+
+    test("it should return a single property if a single entity was requested and property specified", done => {
+        var existingId = Guid.create();
+        context.initialize([
+            new Entity("contact", Guid.create(), {firstname: 'Contact 1', other: "other"}),
+            new Entity("contact", existingId, {firstname: 'Contact 2', other: "Other2"})
+        ]);
+
+        WebApiClient.retrieveMultiple("contacts(" + existingId.toString() + ")/firstname", function (data) {
+            expect(data.value).toBe("Contact 2");
             expect(data.other).toBe(undefined);
             
             done();
