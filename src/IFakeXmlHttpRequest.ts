@@ -22,5 +22,6 @@ export default interface IFakeXmlHttpRequest {
     getRequestHeader(key: string): any;
     setResponseHeader(key: string, value: any): void;
     getResponseHeader(key: string): any;
+    getAllResponseHeaders(): string | null;
     send(body: any): void;
 }
