@@ -334,10 +334,12 @@ export class XrmFakedContext implements IXrmFakedContext
             entities.push(odataEntity);
         }
 
-        if(!parsedOData.wasSingleRetrieve) {
+        if (!parsedOData.wasSingleRetrieve) {
             response.value = entities;
         }
-        else {
+        else if (parsedOData.singleProperty) {
+            response.value = entities[0][parsedOData.singleProperty];
+        } else {
             response = entities[0];
         }
 

@@ -18,13 +18,13 @@ export default class ODataUrlParser implements IODataUrlParser {
             result.queryParams = null; //Empty query
         }
 
-        var entityNameWithIdRegex = /^([a-z0-9_])*\([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\)$/i;
+        var entityNameWithIdRegex = /^([a-z0-9_]+)\(([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})\)(\/([a-z0-9_]+))?$/i;
         var match = entityNameWithIdRegex.exec(result.entitySetName);
 
         if(match && match.length > 0) {
-            var split = result.entitySetName.split('(');
-            result.entitySetName = split[0];
-            result.id = split[1].replace(")", "");
+            result.entitySetName = match[1];
+            result.id = match[2];
+            result.singleProperty = match[4];
             result.wasSingleRetrieve = true;
         }
         
