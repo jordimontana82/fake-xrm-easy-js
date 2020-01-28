@@ -176,8 +176,10 @@ export class XrmFakedContext implements IXrmFakedContext
                     throw 'PUT method not yet supported';
                 case "DELETE":
                     this.executeDeleteRequest(fakeXhr);
+                    break;
                 case "PATCH":
                     this.executePatchRequest(fakeXhr);
+                    break;
             }
             
         }
@@ -278,8 +280,7 @@ export class XrmFakedContext implements IXrmFakedContext
         var parsedOData = this._oDataUrlParser.parse(fakeXhr.relativeUrl);
 
         var entityName = this.getSingularSetName(parsedOData.entitySetName);
-        var jsonData = JSON.parse(fakeXhr.requestBody);
-
+        
         if(!parsedOData.id || parsedOData.id == "") {
             throw "Delete message requires an id";
         }
