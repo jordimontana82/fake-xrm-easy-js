@@ -1,11 +1,46 @@
 ﻿# FakeXrmEasy.Js
 
-This project aims to provide mocks already implemented for Web API calls made from Javascript. This is a work in progress and way less mature than its C# counterpart.
+This project aims to provide mocks already implemented for Web API calls made from Javascript. This is a work in progress and way less mature than [its C# counterpart](https://github.com/jordimontana82/fake-xrm-easy).
 
 [![Build Status](https://dev.azure.com/fake-xrm-easy/Blank/_apis/build/status/fake-xrm-easy-js?branchName=master)](https://dev.azure.com/fake-xrm-easy/Blank/_build/latest?definitionId=1&branchName=master)
 [![NPM](https://img.shields.io/npm/v/fakexrmeasy.svg)](https://www.npmjs.com/package/fakexrmeasy)
 
 NEW: Dependency on edge.js has been removed, the npm runs entirely in the npm process only (no clr code running behind the scenes) which provide an easier setup and much better performance.
+
+## Semantic Versioning
+
+The NuGet packages use semantic versioning like this:
+
+    x.y.z  => Major.Minor.Patch
+       
+    x: stands for the major version. Any breaking changes will update this number.
+
+    y: minor version. Any minor updates add new functionality without breaking changes. An example of these would be a new operator or a new fake message executor.
+
+    z: patch. Any update to this number means new bug fixes for the existing functionality. A new minor version might also include bug fixes too.
+
+## Contributing
+
+Please consider the below guidelines for contributing to the project:
+
+* Priority: Given the overwhelming number of issues and pull requests, between the 2 FakeXrmEasy projects we'll review Pull Requests first, then any outstanding issues. We encourage you to resolve / extend issues by yourselves, as a community, and we'll prioritise those first because we know (as mantainers) the effort it takes. 
+
+    Please do [fork](https://github.com/jordimontana82/fake-xrm-easy/fork) the project and submit a [pull request](https://github.com/jordimontana82/fake-xrm-easy/pulls)
+    
+    We'll thank you forever and ever. 
+
+    If you don't know how to resolve something or are not familiar with pull requests, don't worry, raise the issue anyway. Those will be revised next.
+
+* When raising an issue:
+
+    * <u>**Please provide a sample unit test**</u> to reproduce any issues detected where possible. This will speed up the resolution.
+    * Attach all generated early bound typed entities required (if you're using early bound).
+
+* **If you're using the framework, please do [Star](https://github.com/jordimontana82/fake-xrm-easy-js/star) the project**, it'll give more visibility to the wider community to keep extending and improving it.
+
+## Donate 
+
+*  If you're a business / company who delivers solutions on top of the Power Platform, you can help make OSS sustainable while getting more visibility by becoming a sponsor. Please [reach out to me](https://github.com/jordimontana82) for sponsorship enquiries.
 
 # Goals
 
@@ -19,7 +54,6 @@ To be able to unit test Dynamics CRM Web Api calls as easily as possible, given 
   from the logic which accesses the DOM (HTML). 
 - We want to run unit tests as fast as possible
  
-
 
 # The Approach
 
