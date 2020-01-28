@@ -135,7 +135,7 @@ describe("XrmFakedContext Queries: $filter", function () {
         });
     });
 
-    test("$filter: ne test", done => {
+   test("$filter: ne test", done => {
         context.initialize([
             new Entity("account", Guid.create(), {name: 'Company 1', revenue: 3000, other: "somevalue"}),
             new Entity("account", Guid.create(), {name: 'Company 2', revenue: 4567, other: "someothervalue"}),
