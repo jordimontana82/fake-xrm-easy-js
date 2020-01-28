@@ -215,3 +215,4 @@ ModelManifest.xml
 #Do not include published files in source control, however, these will be published in the npm package when defined in the "files" element in package.json
 dist/
 testoutput/
+package-lock.json

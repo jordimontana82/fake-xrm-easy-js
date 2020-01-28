@@ -1,4 +1,5 @@
 import IFakeXmlHttpRequest from './IFakeXmlHttpRequest';
+import { stringify } from 'querystring';
 
 export class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     method: string;
@@ -53,6 +54,16 @@ export class FakeXmlHttpRequest implements IFakeXmlHttpRequest {
     }
     getResponseHeader(key: string): any {
         return this.responseHeaders[key];
+    }
+    getAllResponseHeaders(): string | null {
+        if (this.responseHeaders){
+            return Object.keys(this.responseHeaders).map(key => {
+                return `${key}: ${this.responseHeaders[key]}`;
+            }).join("\n");
+        }
+        else {
+            return null;
+        }
     }
     send(body: any) {
         this.requestBody = body;
